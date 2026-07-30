@@ -1363,7 +1363,7 @@ button.lumen-tag:focus-visible {
   background: var(--course-strip-surface);
   backdrop-filter: blur(8px);
   border-radius: 9999px;
-  bottom: 28px;
+  bottom: 16px;
   color: var(--course-strip-text);
   display: flex;
   gap: var(--popular-course-strip-panel-gap);
@@ -1409,6 +1409,7 @@ button.lumen-tag:focus-visible {
   display: grid;
   column-gap: 16px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 143.662px 135.667px;
   row-gap: 12px;
 }
 
@@ -1419,7 +1420,7 @@ button.lumen-tag:focus-visible {
   flex-direction: column;
   gap: 12px;
   isolation: isolate;
-  min-height: 144px;
+  min-height: 0;
   overflow: hidden;
   padding: 28px;
   position: relative;
@@ -1531,8 +1532,7 @@ button.lumen-tag:focus-visible {
   will-change: height, width, transform;
 }
 
-.recommendation-card:hover .recommendation-panel,
-.recommendation-card:focus-within .recommendation-panel {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-panel {
   border-radius: 0;
   bottom: -1px;
   height: var(--recommendation-panel-expanded-height);
@@ -1562,8 +1562,7 @@ button.lumen-tag:focus-visible {
   width: auto;
 }
 
-.recommendation-card:hover .recommendation-title,
-.recommendation-card:focus-within .recommendation-title {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title {
   height: 33px;
   white-space: normal;
   width: 100%;
@@ -1596,15 +1595,13 @@ button.lumen-tag:focus-visible {
   transform: translateY(12px);
 }
 
-.recommendation-card:hover .recommendation-title-default,
-.recommendation-card:focus-within .recommendation-title-default {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title-default {
   opacity: 0;
   transform: translateY(-12px);
   transition-duration: var(--recommendation-title-exit-duration);
 }
 
-.recommendation-card:hover .recommendation-title-expanded,
-.recommendation-card:focus-within .recommendation-title-expanded {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title-expanded {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-title-switch-delay);
@@ -1618,10 +1615,8 @@ button.lumen-tag:focus-visible {
   transition: opacity var(--recommendation-content-motion-duration) ease-out, transform var(--recommendation-content-motion-duration) ease-out;
 }
 
-.recommendation-card:hover .recommendation-copy p,
-.recommendation-card:focus-within .recommendation-copy p,
-.recommendation-card:hover .recommendation-copy strong,
-.recommendation-card:focus-within .recommendation-copy strong {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-copy p,
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-copy strong {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-panel-reveal-delay);
@@ -1665,8 +1660,7 @@ button.lumen-tag:focus-visible {
   width: 201px;
 }
 
-.recommendation-card:hover .recommendation-meta,
-.recommendation-card:focus-within .recommendation-meta {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-meta {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-panel-reveal-delay);
@@ -1689,8 +1683,7 @@ button.lumen-tag:focus-visible {
   transition: top var(--motion-fast), transform var(--motion-fast);
 }
 
-.recommendation-card:hover .recommendation-action,
-.recommendation-card:focus-within .recommendation-action {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-action {
   top: calc(var(--recommendation-panel-expanded-height) - var(--recommendation-panel-padding-bottom) - 32px);
 }
 
@@ -1699,8 +1692,7 @@ button.lumen-tag:focus-visible {
   transition: transform var(--motion-fast);
 }
 
-.recommendation-card:hover .recommendation-action .icon,
-.recommendation-card:focus-within .recommendation-action .icon {
+.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-action .icon {
   transform: rotate(0deg);
 }
 
@@ -1708,10 +1700,38 @@ button.lumen-tag:focus-visible {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
   max-width: 768px;
-  padding: 40px 24px 80px;
+  padding: 40px 24px 79.5px;
   width: 100%;
+}
+
+.faq-title {
+  align-items: center;
+  color: var(--text-primary);
+  display: flex;
+  font-size: 0;
+  height: 40px;
+  justify-content: center;
+  line-height: 40px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.faq-title-prefix {
+  font-family: "Gayathri", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -0.6px;
+  line-height: 40px;
+}
+
+.faq-title-emphasis {
+  font-family: "Cormorant Infant", serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 40px;
+  margin-left: 8px;
 }
 
 .faq-list {
@@ -1768,6 +1788,7 @@ button.lumen-tag:focus-visible {
 }
 
 .faq-answer .moocky-text {
+  line-height: 16px;
   margin: 0;
   min-height: 0;
   overflow: hidden;
@@ -1801,12 +1822,19 @@ button.lumen-tag:focus-visible {
   gap: 20px;
 }
 
+.footer-newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .footer-copy .display-title {
   justify-content: flex-start;
   white-space: nowrap;
 }
 
 .footer-newsletter-copy {
+  line-height: 16px;
   margin: 0 0 0 12px;
   max-width: 373px;
 }
@@ -1859,6 +1887,7 @@ button.lumen-tag:focus-visible {
 .footer-copy small {
   color: var(--border-medium);
   font-size: 14px;
+  line-height: 20px;
   margin-left: 12px;
 }
 
@@ -1900,12 +1929,16 @@ button.lumen-tag:focus-visible {
 }
 
 .footer-socials strong {
+  align-items: center;
   background: var(--canvas);
   border-radius: 9999px;
   color: var(--text-primary);
+  display: inline-flex;
   font-size: 12px;
   font-weight: 400;
-  padding: 8px 10px;
+  height: 32px;
+  justify-content: center;
+  padding: 0 10px;
 }
 
 .ai-page {
@@ -3055,6 +3088,10 @@ button.lumen-tag:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .domain-grid {
+    grid-template-rows: none;
+  }
+
   .popular-section {
     min-height: auto;
   }
@@ -3228,6 +3265,21 @@ button.lumen-tag:focus-visible {
   .featured-popular-pill h3 {
     font-size: 32px;
     line-height: 32px;
+  }
+
+  .faq-title {
+    height: auto;
+    white-space: normal;
+  }
+
+  .faq-title-prefix,
+  .faq-title-emphasis {
+    font-size: 30px;
+    line-height: 32px;
+  }
+
+  .faq-title-emphasis {
+    margin-left: 4px;
   }
 
   .display-title {

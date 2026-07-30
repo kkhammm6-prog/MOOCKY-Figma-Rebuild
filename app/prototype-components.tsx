@@ -265,8 +265,8 @@ function MostPopular() {
           </div>
         </div>
         <div className="popular-list" aria-label="Popular course list">
-          {popularCourses.map((course) => (
-            <PopularCourseStrip href={course.href} imageSrc={asset(course.image)} key={course.title} title={course.title} />
+          {popularCourses.map((course, index) => (
+            <PopularCourseStrip href={course.href} imageSrc={asset(course.image)} key={`${course.title}-${index}`} title={course.title} />
           ))}
         </div>
       </div>
@@ -317,10 +317,11 @@ function Recommended() {
         <Button className="small-action" kind="neutralAction" label="More" />
       </div>
       <div className="recommendation-grid">
-        {recommendations.map((course) => (
+        {recommendations.map((course, index) => (
           <RecommendedCourseCard
             description={course.description}
             imageSrc={asset(course.image)}
+            initiallyExpanded={index === 0}
             key={course.id}
             provider={course.provider}
             rating={course.rating}
@@ -339,7 +340,10 @@ function FAQAccordion() {
 
   return (
     <section className="faq-section reveal-on-view" aria-labelledby="faq-title">
-      <DisplayTitle firstWord="Frequently" remainder="Asked Questions" className="faq-title" size="compact" />
+      <h2 className="faq-title" id="faq-title">
+        <span className="faq-title-prefix">Frequently Asked</span>
+        <span className="faq-title-emphasis">Questions</span>
+      </h2>
       <div className="faq-list">
         {faqItems.map((item, index) => {
           const open = index === openIndex;
