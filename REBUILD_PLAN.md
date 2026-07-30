@@ -18,7 +18,7 @@
 | 项目 | 决策 |
 | --- | --- |
 | GitHub 仓库 | `MOOCKY-Figma-Rebuild` |
-| 仓库权限 | Private |
+| 仓库权限 | Public |
 | 项目起点 | 复制当前 MOOCKY 工程结构与 Lumen Atlas 设计系统 |
 | Git 历史 | 不复制旧仓库历史，从新的初始提交开始 |
 | Notion 父页面 | [MOOCKYAI 项目进度](https://app.notion.com/p/3ad947162667809fa35decaf52a3b881) |
@@ -88,7 +88,7 @@
 - [x] 确认仓库、Notion、Figma、部署和 AI 顺序。
 - [x] 创建不含旧 Git 历史的本地项目基线。
 - [x] 保留工程骨架与 Lumen Atlas 设计系统。
-- [ ] 创建 GitHub 私有仓库并推送。
+- [x] 创建 GitHub 公开仓库并推送 `main`、`codex/foundation` 与 `v0.1-planning`。
 - [x] 创建 Notion 执行计划。
 - [ ] 为首个目标 Frame 获取包含 `node-id` 的 Figma 链接。
 - [ ] 创建 `v0.1-planning` Tag。
