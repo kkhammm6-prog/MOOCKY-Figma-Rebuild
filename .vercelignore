@@ -1,0 +1,15 @@
+.DS_Store
+.git
+.next
+node_modules
+coverage
+test-results
+playwright-report
+output/playwright
+.env*
+!.env.example
+docs/*
+!docs/ai-system-prompt.md
+memory.md
+AGENTS.md
+tokens.json

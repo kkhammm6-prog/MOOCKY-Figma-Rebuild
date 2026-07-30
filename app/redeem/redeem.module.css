@@ -1,0 +1,855 @@
+.page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  max-width: 1212px;
+  padding: 10px 40px 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.logoLink {
+  align-items: center;
+  color: var(--text-primary);
+  display: inline-flex;
+  height: var(--logo-lockup-height);
+  width: var(--logo-lockup-width);
+}
+
+.nav {
+  align-items: center;
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 9999px;
+  display: flex;
+  gap: 4px;
+  padding: 2px;
+}
+
+.nav a {
+  border-radius: 9999px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 8px 12px;
+  transition: background-color var(--motion-fast), color var(--motion-fast);
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  background: var(--surface-active);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.headerActions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.balancePill {
+  align-items: center;
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 9999px;
+  color: var(--text-primary);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.hero {
+  align-items: center;
+  display: grid;
+  gap: 58px;
+  grid-template-columns: minmax(0, 0.94fr) minmax(420px, 1.06fr);
+  max-width: 1212px;
+  min-height: 690px;
+  padding: 110px 40px 74px;
+  width: 100%;
+}
+
+.heroCopy {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.kicker {
+  margin: 0 0 -6px;
+}
+
+.heroTitle {
+  justify-content: flex-start;
+  max-width: 1120px;
+}
+
+.heroBody {
+  font-size: 18px;
+  line-height: 24px;
+  margin: 0;
+  max-width: 500px;
+}
+
+.heroActions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.heroGallery {
+  min-height: 560px;
+  position: relative;
+}
+
+.heroImageFrame {
+  background: var(--surface);
+  border: var(--stroke-default) solid rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.heroImageFramePrimary {
+  height: 430px;
+  right: 18px;
+  top: 20px;
+  transform: rotate(2deg);
+  width: min(600px, 96%);
+}
+
+.heroImageFrameSecondary {
+  bottom: 26px;
+  height: 278px;
+  left: 0;
+  transform: rotate(-6deg);
+  width: 390px;
+  z-index: 1;
+}
+
+.rewardImage {
+  height: 100%;
+  object-fit: cover;
+  transition: filter 300ms ease-out, transform 700ms ease-out;
+  width: 100%;
+}
+
+.heroImageFrame:hover .rewardImage,
+.rewardCard:hover .rewardImage,
+.rewardCard:focus-within .rewardImage,
+.ritualStrip:hover .ritualStripImage img,
+.ritualStrip:focus-within .ritualStripImage img {
+  filter: saturate(1.04) contrast(1.03);
+  transform: scale(1.045);
+}
+
+.creditPanel {
+  align-items: flex-start;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.78);
+  border: var(--stroke-default) solid rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  bottom: 12px;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  position: absolute;
+  right: 0;
+  width: 218px;
+  z-index: 2;
+}
+
+.creditPanel span,
+.creditPanel small,
+.statementMetric span,
+.milestoneItem span,
+.historyRow span,
+.historyRow em {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.creditPanel strong {
+  color: var(--accent);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+}
+
+.statementBand {
+  align-items: center;
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  max-width: 1132px;
+  padding: 24px;
+  width: calc(100% - 80px);
+}
+
+.statementBand p {
+  margin: 0;
+  max-width: 760px;
+}
+
+.statementMetric {
+  align-items: flex-start;
+  background: var(--canvas);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 72px 20px 20px;
+}
+
+.statementMetric strong {
+  color: var(--text-primary);
+  font-family: "DM Serif Text", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.section {
+  max-width: 1212px;
+  padding: 130px 40px 0;
+  width: 100%;
+}
+
+.sectionIntro {
+  align-items: flex-end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 0 16px;
+}
+
+.sectionIntro h2,
+.splitIntro h2 {
+  margin: 0;
+}
+
+.sectionIntro p {
+  margin: 0;
+  max-width: 430px;
+}
+
+.bentoGrid {
+  display: grid;
+  gap: 24px;
+  grid-auto-flow: dense;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.rewardCard {
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  display: grid;
+  grid-column: span 5;
+  grid-template-columns: 46% minmax(0, 1fr);
+  min-height: 302px;
+  overflow: hidden;
+}
+
+.rewardCardLarge {
+  grid-column: span 7;
+  grid-row: span 2;
+  grid-template-columns: 1fr;
+  min-height: 628px;
+}
+
+.rewardCardWide {
+  grid-column: span 12;
+  grid-template-columns: minmax(280px, 42%) minmax(0, 1fr);
+  min-height: 280px;
+}
+
+.rewardCardCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+.rewardCardCopy p,
+.rewardCardCopy h3 {
+  margin: 0;
+}
+
+.rewardCardFooter {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.rewardCardFooter strong {
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.splitIntro {
+  align-items: end;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 430px);
+  margin-bottom: 34px;
+  padding: 0 16px;
+}
+
+.splitIntro p {
+  margin: 0;
+}
+
+.splitIntro :global(.display-title) {
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.digitalShowcase {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.digitalItem {
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+.digitalItem img {
+  aspect-ratio: 1.42;
+  height: auto;
+  object-fit: cover;
+  transition: filter 300ms ease-out, transform 700ms ease-out;
+  width: 100%;
+}
+
+.digitalItem:hover img,
+.digitalItem:focus-within img {
+  filter: saturate(1.04) contrast(1.03);
+  transform: scale(1.045);
+}
+
+.digitalItemCopy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 22px;
+  justify-content: space-between;
+  padding: 24px;
+  width: 100%;
+}
+
+.digitalItem h3,
+.digitalItem p {
+  margin: 0;
+}
+
+.digitalItem p {
+  margin-top: 8px;
+  max-width: 320px;
+}
+
+.digitalItem span {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.accordionSection {
+  padding-top: 150px;
+}
+
+.ritualStripList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ritualStrip {
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+  isolation: isolate;
+  min-height: 316px;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ritualStripImage {
+  background: var(--surface);
+  min-height: 316px;
+  overflow: hidden;
+}
+
+.ritualStripImage img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 300ms ease-out, transform 700ms ease-out;
+  width: 100%;
+}
+
+.ritualStripPanel {
+  background: var(--surface);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: space-between;
+  min-height: 316px;
+  overflow: hidden;
+  padding: 30px 32px;
+  position: relative;
+  transition: color var(--motion-fast), background-color var(--motion-fast);
+}
+
+.ritualStripPanel::before,
+.ritualStripPanel::after {
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity var(--motion-fast);
+}
+
+.ritualStripPanel::before {
+  background-image: var(--ritual-hover-image);
+  background-position: center;
+  background-size: cover;
+  filter: blur(var(--category-card-hover-background-blur));
+  inset: calc(var(--category-card-hover-background-blur) * -1);
+  z-index: 0;
+}
+
+.ritualStripPanel::after {
+  background: var(--action-neutral-light);
+  z-index: 1;
+}
+
+.ritualStripPanel > * {
+  position: relative;
+  z-index: 2;
+}
+
+.ritualStripPanel h3,
+.ritualStripPanel p {
+  margin: 0;
+  transition: text-shadow var(--motion-fast), --moocky-text-color var(--motion-fast);
+}
+
+.ritualStripPanel h3 {
+  --moocky-text-color: currentColor;
+}
+
+.ritualStripPanel p {
+  --moocky-text-color: var(--text-body);
+  margin-top: 8px;
+  max-width: 340px;
+}
+
+.ritualStripAction {
+  align-items: center;
+  color: var(--text-primary);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 8px;
+  line-height: 16px;
+  text-decoration: none;
+  transform: translateY(2px);
+  transition: color var(--motion-fast), opacity var(--motion-fast), transform var(--motion-fast), text-shadow var(--motion-fast);
+  width: fit-content;
+}
+
+.ritualStripAction svg {
+  height: 16px;
+  stroke-width: 1.5px;
+  width: 16px;
+}
+
+.ritualStrip:hover .ritualStripPanel,
+.ritualStrip:focus-within .ritualStripPanel {
+  color: var(--category-card-hover-foreground);
+}
+
+.ritualStrip:hover .ritualStripPanel::before,
+.ritualStrip:focus-within .ritualStripPanel::before {
+  opacity: 1;
+}
+
+.ritualStrip:hover .ritualStripPanel::after,
+.ritualStrip:focus-within .ritualStripPanel::after {
+  opacity: 0.38;
+}
+
+.ritualStrip:hover .ritualStripPanel h3,
+.ritualStrip:hover .ritualStripPanel p,
+.ritualStrip:hover .ritualStripAction,
+.ritualStrip:focus-within .ritualStripPanel h3,
+.ritualStrip:focus-within .ritualStripPanel p,
+.ritualStrip:focus-within .ritualStripAction {
+  --moocky-text-color: currentColor;
+  color: currentColor;
+  text-shadow: var(--category-card-text-shadow);
+}
+
+.ritualStrip:hover .ritualStripAction,
+.ritualStrip:focus-within .ritualStripAction {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ritualStripAction:focus-visible {
+  border-radius: 9999px;
+  outline: var(--stroke-emphasis) solid currentColor;
+  outline-offset: 4px;
+}
+
+.milestoneShell {
+  align-items: stretch;
+  background:
+    linear-gradient(120deg, rgba(130, 104, 85, 0.14), rgba(93, 152, 170, 0.12) 48%, rgba(194, 163, 133, 0.16)),
+    var(--surface);
+  border: var(--stroke-default) solid rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  display: grid;
+  gap: 46px;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  padding: 24px;
+}
+
+.milestoneIntro {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  justify-content: space-between;
+  min-height: 330px;
+  padding: 8px;
+}
+
+.milestoneIntro h2,
+.milestoneIntro p {
+  margin: 0;
+}
+
+.milestoneIntro p {
+  max-width: 340px;
+}
+
+.milestoneTrack {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.milestoneItem {
+  background: rgba(255, 255, 255, 0.62);
+  border: var(--stroke-default) solid rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-end;
+  min-height: 330px;
+  padding: 72px 20px 20px;
+  position: relative;
+}
+
+.milestoneItem > span {
+  align-items: center;
+  background: var(--surface);
+  border-radius: 9999px;
+  color: var(--text-primary);
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  left: 20px;
+  position: absolute;
+  top: 20px;
+  width: 32px;
+}
+
+.milestoneItem h3,
+.milestoneItem p {
+  margin: 0;
+}
+
+.milestoneItem strong {
+  color: var(--accent);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+}
+
+.historySection {
+  padding-bottom: 92px;
+}
+
+.historyTable {
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.historyRow {
+  align-items: center;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(240px, 1fr) 160px 110px 120px;
+  min-height: 72px;
+  padding: 0 24px;
+}
+
+.historyRow + .historyRow {
+  border-top: var(--stroke-default) solid var(--border-soft);
+}
+
+.historyRow strong {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.historyRow em {
+  background: var(--canvas);
+  border-radius: 9999px;
+  color: var(--accent);
+  font-style: normal;
+  justify-self: start;
+  padding: 4px 10px;
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .digitalShowcase,
+  .milestoneShell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    gap: 30px;
+    padding-top: 80px;
+  }
+
+  .heroGallery {
+    min-height: 520px;
+    width: 100%;
+  }
+
+  .rewardCard,
+  .rewardCardLarge,
+  .rewardCardWide {
+    grid-column: span 12;
+  }
+
+  .milestoneTrack {
+    grid-template-columns: 1fr;
+  }
+
+  .milestoneIntro,
+  .milestoneItem {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 780px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 10px 24px 0;
+  }
+
+  .nav {
+    order: 3;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .headerActions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .hero,
+  .section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .hero {
+    min-height: 0;
+    padding-top: 72px;
+  }
+
+  .heroTitle {
+    --display-first-size: 58px;
+    --display-rest-size: 49.3px;
+    --display-first-tracking: -2.9px;
+    --display-rest-tracking: -0.74px;
+  }
+
+  .heroBody {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .heroGallery {
+    min-height: 460px;
+  }
+
+  .heroImageFramePrimary {
+    height: 338px;
+    right: 0;
+    width: 92%;
+  }
+
+  .heroImageFrameSecondary {
+    bottom: 52px;
+    height: 210px;
+    width: 245px;
+  }
+
+  .creditPanel {
+    bottom: 0;
+    width: min(218px, 62vw);
+  }
+
+  .statementBand {
+    grid-template-columns: 1fr;
+    width: calc(100% - 48px);
+  }
+
+  .section {
+    padding-top: 104px;
+  }
+
+  .sectionIntro,
+  .splitIntro {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .rewardCard,
+  .rewardCardWide {
+    grid-template-columns: 1fr;
+  }
+
+  .rewardCard {
+    min-height: auto;
+  }
+
+  .rewardCard .rewardImage {
+    aspect-ratio: 1.45;
+    height: auto;
+  }
+
+  .rewardCardLarge {
+    min-height: 0;
+  }
+
+  .ritualStrip {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .ritualStripImage {
+    aspect-ratio: 1.48;
+    min-height: 0;
+  }
+
+  .ritualStripPanel {
+    min-height: 230px;
+    padding: 24px;
+  }
+
+  .historyRow {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    padding: 18px 20px;
+  }
+
+}
+
+@media (max-width: 520px) {
+  .headerActions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .heroActions {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .heroActions a {
+    width: 100%;
+  }
+
+  .heroGallery {
+    min-height: 400px;
+  }
+
+  .heroImageFramePrimary {
+    height: 280px;
+    transform: rotate(0deg);
+    width: 100%;
+  }
+
+  .heroImageFrameSecondary {
+    display: none;
+  }
+
+  .creditPanel {
+    right: 14px;
+  }
+
+  .rewardCardCopy {
+    padding: 20px;
+  }
+}

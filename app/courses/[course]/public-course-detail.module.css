@@ -1,0 +1,675 @@
+.page {
+  overflow-x: clip;
+}
+
+.shell {
+  margin: 0 auto;
+  max-width: 1206px;
+  padding: 32px 40px 100px;
+  width: 100%;
+}
+
+.breadcrumb {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0 0 32px;
+}
+
+.hero {
+  align-items: center;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
+  min-height: 500px;
+}
+
+.heroCopy {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.heroTitle {
+  column-gap: var(--display-rest-gap);
+  justify-content: flex-start;
+  max-width: 720px;
+  row-gap: 0;
+}
+
+.heroTitle :global(.display-title-rest) {
+  margin-left: 0;
+}
+
+.heroSubtitle {
+  color: var(--text-muted);
+  margin-top: -12px;
+}
+
+.heroBody {
+  max-width: 548px;
+}
+
+.ratingRow {
+  align-items: flex-start;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ratingRow span:first-child {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.ratingRow span:last-child {
+  color: var(--text-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.coursePromoVisual {
+  align-self: start;
+  aspect-ratio: 4 / 3;
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  margin: 66px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.coursePromoVisual::after {
+  background: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--canvas) 14%, transparent));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.coursePromoVisual img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.detailGrid {
+  align-items: start;
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 651px) minmax(320px, 444px);
+  margin-top: 64px;
+}
+
+.contentColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+  min-width: 0;
+}
+
+.railColumn {
+  align-self: start;
+  min-width: 0;
+  position: sticky;
+  top: 24px;
+}
+
+.purchasePanel {
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.priceRow {
+  align-items: baseline;
+  display: flex;
+  gap: 14px;
+}
+
+.priceRow strong {
+  color: var(--text-primary);
+  font-family: "DM Serif Text", serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.priceRow span {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: line-through;
+}
+
+.enrollButton,
+.secondaryEnrollButton {
+  border-radius: 16px;
+  height: 48px;
+  width: 100%;
+}
+
+.enrollButton {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.enrollButton :global(.lumen-button-label) {
+  line-height: 20px;
+}
+
+.secondaryEnrollButton {
+  background: var(--canvas);
+  color: var(--text-primary);
+}
+
+.includedList {
+  border-top: var(--stroke-default) solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 20px;
+}
+
+.includedItem {
+  align-items: center;
+  color: var(--text-body);
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: 12px;
+  line-height: 16px;
+}
+
+.includedItem svg {
+  color: var(--text-muted);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  align-items: center;
+  display: flex;
+  min-height: 32px;
+  padding-inline: 16px;
+}
+
+.instructorCard,
+.moduleCard,
+.outcomeCard,
+.testimonialCard,
+.aiValueCard {
+  background: var(--surface);
+  border: var(--stroke-default) solid var(--border-soft);
+  border-radius: 16px;
+}
+
+.instructorCard {
+  align-items: center;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  padding: 16px;
+}
+
+.instructorAvatar {
+  align-items: center;
+  background: #bee7f5;
+  border-radius: 9999px;
+  color: rgba(0, 7, 20, 0.62);
+  display: flex;
+  font-family: "DM Serif Text", serif;
+  font-size: 14px;
+  height: 40px;
+  justify-content: center;
+  line-height: 14px;
+  width: 40px;
+}
+
+.instructorCopy {
+  min-width: 0;
+}
+
+.instructorCopy h3 {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.instructorCopy h3 span {
+  font-family: "DM Serif Text", serif;
+}
+
+.instructorCopy p,
+.instructorCopy li {
+  color: var(--text-body);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.instructorCopy p {
+  margin: 4px 0 8px;
+}
+
+.instructorCopy ul {
+  display: grid;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.instructorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.syllabusList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.moduleCard {
+  background: color-mix(in srgb, var(--surface) 45%, var(--canvas));
+  overflow: hidden;
+}
+
+.moduleSummary {
+  align-items: center;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 44px minmax(0, 1fr) 16px;
+  padding: 24px;
+}
+
+.moduleSummary > strong {
+  color: var(--text-muted);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.moduleSummary > div {
+  display: grid;
+  gap: 8px;
+}
+
+.moduleSummary h3 {
+  color: var(--text-primary);
+  font-family: "DM Serif Text", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+  margin: 0;
+}
+
+.moduleSummary p {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.moduleCardExpanded .moduleSummary svg {
+  transform: rotate(180deg);
+}
+
+.lessonPreview {
+  border-top: var(--stroke-default) solid var(--border-soft);
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 16px 24px 24px 92px;
+}
+
+.lessonPreview li {
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.outcomeGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.outcomeCard {
+  align-items: flex-start;
+  color: var(--category-card-text);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  isolation: isolate;
+  min-height: 144px;
+  overflow: hidden;
+  padding: 28px;
+  position: relative;
+  transition: color var(--motion-fast);
+}
+
+.outcomeCard::before {
+  background-image: var(--outcome-hover-image);
+  background-position: center;
+  background-size: cover;
+  border-radius: inherit;
+  content: "";
+  filter: blur(var(--category-card-hover-background-blur));
+  inset: calc(var(--category-card-hover-background-blur) * -1);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity var(--motion-fast);
+  z-index: 0;
+}
+
+.outcomeCard:hover {
+  color: var(--category-card-hover-foreground);
+}
+
+.outcomeCard:hover::before {
+  opacity: 1;
+}
+
+.outcomeCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.outcomeCard svg {
+  color: currentColor;
+  flex: 0 0 25.666px;
+  height: 25.666px;
+  stroke: currentColor;
+  transition: color var(--motion-fast);
+  width: 25.666px;
+}
+
+.outcomeCard h3 {
+  color: currentColor;
+  font-family: "DM Serif Text", serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0;
+  transition: color var(--motion-fast), text-shadow var(--motion-fast);
+}
+
+.outcomeCard p {
+  color: var(--category-card-copy);
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0;
+  transition: color var(--motion-fast), text-shadow var(--motion-fast);
+}
+
+.outcomeCard:hover h3,
+.outcomeCard:hover p {
+  color: var(--category-card-hover-foreground);
+  text-shadow: var(--category-card-text-shadow);
+}
+
+.aiValueSection {
+  display: block;
+}
+
+.aiValueCard {
+  background: var(--surface);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.74fr);
+  isolation: isolate;
+  overflow: hidden;
+  padding: 28px;
+  position: relative;
+}
+
+.aiValueCard::before {
+  background-image: url("/assets/figma/domain-gradient-02.png");
+  background-position: center;
+  background-size: cover;
+  content: "";
+  filter: blur(var(--category-card-hover-background-blur));
+  inset: calc(var(--category-card-hover-background-blur) * -1);
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.aiValueCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiValueCard > div:first-child {
+  color: var(--category-card-hover-foreground);
+  text-shadow: var(--category-card-text-shadow);
+}
+
+.aiValueCard > div:first-child :global(.moocky-text) {
+  --moocky-text-color: currentColor;
+}
+
+.aiValueCard h2 {
+  color: var(--category-card-hover-foreground);
+  font-family: "DM Serif Text", serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 36px;
+  margin: 6px 0 0;
+}
+
+.aiValueGrid {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.aiValueGrid span {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  color: rgba(0, 7, 20, 0.72);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 8px;
+  line-height: 16px;
+  max-width: 100%;
+  padding: 10px 12px;
+  width: fit-content;
+}
+
+.aiValueGrid span svg {
+  flex: 0 0 16px;
+}
+
+.aboutSection,
+.testimonialSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aboutPanel {
+  display: grid;
+  gap: 20px;
+}
+
+.aboutPanel p {
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  max-width: 64ch;
+}
+
+.aboutPanel strong {
+  color: var(--accent-deep);
+}
+
+.testimonialGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.testimonialCard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: space-between;
+  min-height: 224px;
+  padding: 24px;
+}
+
+.testimonialCard p {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.testimonialCard > div {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.testimonialCard > div > span {
+  align-items: center;
+  background: color-mix(in srgb, #bee7f5 70%, var(--surface));
+  border-radius: 9999px;
+  color: rgba(0, 7, 20, 0.62);
+  display: flex;
+  flex: 0 0 36px;
+  font-family: "DM Serif Text", serif;
+  font-size: 12px;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.testimonialCard strong,
+.testimonialCard em {
+  display: block;
+}
+
+.testimonialCard strong {
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.testimonialCard em {
+  color: var(--text-body);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 16px;
+}
+
+@media (max-width: 1120px) {
+  .hero,
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .coursePromoVisual {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .railColumn {
+    order: -1;
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .shell {
+    padding: 24px 20px 72px;
+  }
+
+  .hero {
+    gap: 32px;
+  }
+
+  .heroBody {
+    max-width: none;
+  }
+
+  .aiValueCard,
+  .instructorCard {
+    grid-template-columns: 1fr;
+  }
+
+  .detailGrid {
+    margin-top: 48px;
+  }
+
+  .contentColumn {
+    gap: 44px;
+  }
+
+  .instructorActions {
+    justify-content: flex-start;
+  }
+
+  .outcomeGrid,
+  .testimonialGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .lessonPreview {
+    padding-left: 48px;
+  }
+
+  .moduleSummary {
+    gap: 16px;
+    grid-template-columns: 36px minmax(0, 1fr) 16px;
+    padding: 20px;
+  }
+
+  .moduleSummary > strong {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .moduleSummary h3 {
+    font-size: 20px;
+    line-height: 24px;
+    white-space: normal;
+  }
+
+  .aiValueCard {
+    padding: 24px;
+  }
+
+  .aiValueGrid {
+    align-items: flex-start;
+  }
+}
