@@ -22,6 +22,7 @@
 | 项目起点 | 复制当前 MOOCKY 工程结构与 Lumen Atlas 设计系统 |
 | Git 历史 | 不复制旧仓库历史，从新的初始提交开始 |
 | Notion 父页面 | [MOOCKYAI 项目进度](https://app.notion.com/p/3ad947162667809fa35decaf52a3b881) |
+| Notion 执行页 | [MOOCKY Figma Rebuild｜设计还原与部署记录](https://app.notion.com/p/3ad94716266781faaa7cc9c9d1fb3ead) |
 | Figma 文件 | [Group 5](https://www.figma.com/design/hoN23Dj67OVv6D0drKYY24/Group-5?m=dev) |
 | Figma 目标区域 | `HI-FI example` |
 | 部署 | 新建独立 rebuild 项目和域名，不覆盖旧站 |
@@ -45,6 +46,7 @@
 - 旧 GitHub：<https://github.com/kkhammm6-prog/MOOCKY-AI-Enhanced-Online-Learning-Platform>
 - 旧线上网站：<https://moocky-ai.vercel.app/course>
 - 新 Notion 父页面：<https://app.notion.com/p/3ad947162667809fa35decaf52a3b881>
+- 新 Notion 执行页：<https://app.notion.com/p/3ad94716266781faaa7cc9c9d1fb3ead>
 - Figma：<https://www.figma.com/design/hoN23Dj67OVv6D0drKYY24/Group-5?m=dev>
 
 ## 4. 基线策略
@@ -87,7 +89,7 @@
 - [x] 创建不含旧 Git 历史的本地项目基线。
 - [x] 保留工程骨架与 Lumen Atlas 设计系统。
 - [ ] 创建 GitHub 私有仓库并推送。
-- [ ] 创建 Notion 执行计划。
+- [x] 创建 Notion 执行计划。
 - [ ] 为首个目标 Frame 获取包含 `node-id` 的 Figma 链接。
 - [ ] 创建 `v0.1-planning` Tag。
 
