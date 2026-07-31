@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, getNvidiaRequestOptions, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "../shared";
+import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, getNvidiaRequestOptions, loadSystemPrompt, natureArchitectureDemoResponse, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -249,7 +249,7 @@ export async function POST(request: NextRequest) {
 
           const responsePayload = await openAiResponse.json();
           const content = extractOutputText(responsePayload);
-          const parsed = parseEnvelope(content) ?? fallbackResponse("MOOCKY AI returned an unreadable prototype response. Try asking again with a shorter prompt.");
+          const parsed = parseEnvelope(content) ?? natureArchitectureDemoResponse(body.surface ?? "heroPrompt");
           const response = normalizeResponseForMode(parsed, conversationMode);
 
           if (response.answerMarkdown) {
@@ -374,7 +374,7 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        const parsed = parseEnvelope(content) ?? fallbackResponse(`MOOCKY AI returned an unreadable ${providerDisplayName(provider)} response. Try asking again with a shorter prompt.`);
+        const parsed = parseEnvelope(content) ?? natureArchitectureDemoResponse(body.surface ?? "heroPrompt");
         const response = normalizeResponseForMode(parsed, conversationMode);
         write("done", { response });
         controller.close();

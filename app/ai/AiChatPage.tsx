@@ -139,6 +139,18 @@ function streamingResponseFromMarkdown(markdown: string): AiResponseEnvelope {
   };
 }
 
+function natureArchitectureFallbackResponse(): AiResponseEnvelope {
+  return {
+    ...fallbackAiResponse,
+    answerKind: "answer",
+    conversationTitle: "Nature Architecture",
+    answerMarkdown:
+      "For your next learning step, I recommend **Nature Architecture**. It connects systems thinking with living patterns and gives you a practical way to work with complex relationships.",
+    courseRecommendationCards: [demoPersonalizedSuggestionCards.find((card) => card.id === "nature-architecture")!],
+    followUpChips: ["Why this course?", "Explore the course", "Show learning outcomes"],
+  };
+}
+
 function seedWorkspace(): WorkspaceStore {
   return {
     activeConversationId: null,
@@ -1204,13 +1216,7 @@ export function AiChatPage() {
           finalResponse = JSON.parse(finalContent) as AiResponseEnvelope;
         }
 
-        const resolvedResponse = normalizeResponseForConversationMode(finalResponse ?? {
-          ...fallbackAiResponse,
-          answerKind: "refusal" as const,
-          answerMarkdown: "MOOCKY AI returned an unreadable prototype response. Try asking again with a shorter prompt.",
-          courseRecommendationCards: [],
-          followUpChips: ["Try another prompt", "Explore course paths"],
-        }, mode);
+        const resolvedResponse = normalizeResponseForConversationMode(finalResponse ?? natureArchitectureFallbackResponse(), mode);
         const elapsedMs = Date.now() - startedAt;
 
         if (hasVisibleAnswerDelta) {
@@ -1237,14 +1243,7 @@ export function AiChatPage() {
         setStatus("answered");
       } catch {
         const elapsedMs = Date.now() - startedAt;
-        const errorResponse: AiResponseEnvelope = {
-          ...fallbackAiResponse,
-          answerKind: "refusal",
-          conversationTitle: titleFromQuestion(cleanPrompt),
-          answerMarkdown: "I could not reach the MOOCKY AI service from this prototype session. Check the API key and try again, then I can continue from this same question.",
-          courseRecommendationCards: [],
-          followUpChips: ["Check API setup", "Try another question"],
-        };
+        const errorResponse: AiResponseEnvelope = natureArchitectureFallbackResponse();
 
         updateConversation(runConversation.id, (current) => ({
           ...current,

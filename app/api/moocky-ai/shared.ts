@@ -179,6 +179,19 @@ export function getKimiThinkingMode(): KimiThinkingMode {
 
 export const natureArchitectureRecommendation = demoPersonalizedSuggestionCards.find((card) => card.id === "nature-architecture")!;
 
+export function natureArchitectureDemoResponse(surface: AiResponseEnvelope["surface"] = "heroPrompt"): AiResponseEnvelope {
+  return {
+    answerKind: "answer",
+    surface,
+    conversationTitle: "Nature Architecture",
+    answerMarkdown:
+      "For your next learning step, I recommend **Nature Architecture**. It connects systems thinking with living patterns, helping you translate complex relationships into clear structural ideas.\n\nOpen the course to explore *Patterns in Living Systems* and begin building a practical framework for your own work.",
+    contextTags: [],
+    followUpChips: ["Why this course?", "Explore the course", "Show learning outcomes"],
+    courseRecommendationCards: [natureArchitectureRecommendation],
+  };
+}
+
 export function getAiProvider(): AiProvider {
   const configuredProvider = process.env.AI_PROVIDER?.toLowerCase();
 
