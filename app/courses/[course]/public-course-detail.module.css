@@ -297,10 +297,21 @@
 
 .moduleSummary {
   align-items: center;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
   display: grid;
+  font: inherit;
   gap: 24px;
   grid-template-columns: 44px minmax(0, 1fr) 16px;
   padding: 24px;
+  text-align: left;
+  width: 100%;
+}
+
+.moduleSummary:focus-visible {
+  outline: var(--stroke-emphasis) solid var(--border-medium);
+  outline-offset: -3px;
 }
 
 .moduleSummary > strong {
@@ -330,6 +341,10 @@
   font-weight: 400;
   line-height: 16px;
   margin: 0;
+}
+
+.moduleSummary svg {
+  transition: transform var(--motion-fast);
 }
 
 .moduleCardExpanded .moduleSummary svg {

@@ -105,31 +105,44 @@ function PurchasePanel() {
 }
 
 function Syllabus({ modules }: { modules: PublicCourseModule[] }) {
+  const [openModuleId, setOpenModuleId] = useState<string | null>(modules[0]?.id ?? null);
+
   return (
     <section className={cx(styles.section, "reveal-on-view")} aria-labelledby="syllabus-title">
       <div className={styles.sectionHeader}>
         <Text as="h2" id="syllabus-title" variant="label-16" tone="accent">Course Structure</Text>
       </div>
       <div className={styles.syllabusList}>
-        {modules.map((module, index) => (
-          <article className={`${styles.moduleCard} ${index === 0 ? styles.moduleCardExpanded : ""}`} key={module.id}>
-            <div className={styles.moduleSummary}>
+        {modules.map((module) => {
+          const isOpen = module.id === openModuleId;
+          const lessonListId = `module-${module.id}-lessons`;
+
+          return (
+            <article className={cx(styles.moduleCard, isOpen && styles.moduleCardExpanded)} key={module.id}>
+              <button
+                aria-controls={lessonListId}
+                aria-expanded={isOpen}
+                className={styles.moduleSummary}
+                onClick={() => setOpenModuleId(isOpen ? null : module.id)}
+                type="button"
+              >
               <strong>{module.id}</strong>
               <div>
                 <h3>{module.title}</h3>
                 <p>{module.meta}</p>
               </div>
               <LumenIcon name="faq-chevron" />
-            </div>
-            {index === 0 ? (
-              <ul className={styles.lessonPreview}>
+              </button>
+              {isOpen ? (
+                <ul className={styles.lessonPreview} id={lessonListId}>
                 {module.lessons.map((lesson) => (
                   <li key={lesson}>{lesson}</li>
                 ))}
               </ul>
             ) : null}
           </article>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

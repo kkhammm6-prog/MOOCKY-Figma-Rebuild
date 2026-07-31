@@ -207,13 +207,25 @@ export const publicCourseDetails: Record<string, PublicCourseDetail> = {
         id: "02",
         title: "Materials and Microclimates",
         meta: "5 lectures - 3.5 hours",
-        lessons: ["Light, shade, and thermal comfort", "Bio-based material assemblies", "Designing with water and air flow"],
+        lessons: [
+          "Light, shade, and thermal comfort",
+          "Bio-based material assemblies",
+          "Designing with water and air flow",
+          "Detailing for moisture, repair, and material aging",
+          "Microclimate studies for the studio site",
+        ],
       },
       {
         id: "03",
         title: "Regenerative Spatial Strategy",
         meta: "5 lectures - 3 hours",
-        lessons: ["Circular site systems", "Human attention in natural spaces", "Studio critique and final framework"],
+        lessons: [
+          "Circular site systems",
+          "Human attention in natural spaces",
+          "Landscape stewardship and maintenance cycles",
+          "Measuring regeneration through feedback loops",
+          "Studio critique and final framework",
+        ],
       },
     ],
     outcomes: [
