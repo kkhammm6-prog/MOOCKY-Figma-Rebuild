@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, responseSchema, type AiRequest } from "../shared";
+import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -194,8 +194,8 @@ export async function POST(request: NextRequest) {
       };
 
       try {
-        const provider = process.env.AI_PROVIDER ?? (process.env.MOONSHOT_API_KEY ? "kimi" : "openai");
-        const apiKey = provider === "kimi" ? process.env.MOONSHOT_API_KEY : process.env.OPENAI_API_KEY;
+        const providerConfig = getAiProviderConfig();
+        const { apiKey, provider } = providerConfig;
 
         if (!apiKey) {
           if (body.surface === "courseRail" || body.courseContext) {
@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
           }
 
           const fallback = fallbackResponse(
-            `MOOCKY AI is wired for the ${provider === "kimi" ? "Kimi" : "OpenAI"} API, but this local prototype is missing the server API key. Add the key and retry this question.`,
+            `MOOCKY AI is wired for the ${providerDisplayName(provider)} API, but this deployment is missing the server API key. Add the key and retry this question.`,
           );
           write("done", {
             response: normalizeResponseForMode(fallback, conversationMode),
@@ -217,7 +217,7 @@ export async function POST(request: NextRequest) {
         const systemPrompt = await loadSystemPrompt();
         const inputPayload = buildInputPayload(body, userMessage);
 
-        if (provider !== "kimi") {
+        if (provider === "openai") {
           const openAiResponse = await fetch("https://api.openai.com/v1/responses", {
             body: JSON.stringify({
               model: process.env.OPENAI_MODEL ?? "gpt-5.5",
@@ -261,19 +261,25 @@ export async function POST(request: NextRequest) {
           return;
         }
 
-        const kimiBaseUrl = (process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1").replace(/\/$/, "");
         const kimiThinkingMode = getKimiThinkingMode();
-        const kimiResponse = await fetch(`${kimiBaseUrl}/chat/completions`, {
+        const compatibleRequest: Record<string, unknown> = {
+          model: providerConfig.model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: JSON.stringify(inputPayload) },
+          ],
+          response_format: { type: "json_object" },
+          stream: true,
+          max_tokens: 3200,
+        };
+
+        if (provider === "kimi") {
+          compatibleRequest.thinking = { type: kimiThinkingMode };
+        }
+
+        const compatibleResponse = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
           body: JSON.stringify({
-            model: process.env.MOONSHOT_MODEL ?? "kimi-k2.5",
-            messages: [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: JSON.stringify(inputPayload) },
-            ],
-            response_format: { type: "json_object" },
-            thinking: { type: kimiThinkingMode },
-            stream: true,
-            max_tokens: 3200,
+            ...compatibleRequest,
           }),
           headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -282,15 +288,15 @@ export async function POST(request: NextRequest) {
           method: "POST",
         });
 
-        if (!kimiResponse.ok || !kimiResponse.body) {
-          const detail = await kimiResponse.text().catch(() => "");
-          console.error("Kimi stream request failed", { status: kimiResponse.status, detail: detail.slice(0, 500) });
-          write("error", { message: `Kimi API request failed with status ${kimiResponse.status}.` });
+        if (!compatibleResponse.ok || !compatibleResponse.body) {
+          const detail = await compatibleResponse.text().catch(() => "");
+          console.error(`${providerDisplayName(provider)} stream request failed`, { status: compatibleResponse.status, detail: detail.slice(0, 500) });
+          write("error", { message: `${providerDisplayName(provider)} API request failed with status ${compatibleResponse.status}.` });
           controller.close();
           return;
         }
 
-        const reader = kimiResponse.body.getReader();
+        const reader = compatibleResponse.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
         let content = "";
@@ -333,7 +339,7 @@ export async function POST(request: NextRequest) {
             const reasoning = typeof delta.reasoning_content === "string" ? cleanReasoningDelta(delta.reasoning_content) : "";
             const contentDelta = typeof delta.content === "string" ? delta.content : "";
 
-            if (kimiThinkingMode === "enabled" && reasoning) {
+            if ((provider === "nvidia" || kimiThinkingMode === "enabled") && reasoning) {
               write("reasoning_delta", { delta: reasoning });
             }
 
@@ -361,7 +367,7 @@ export async function POST(request: NextRequest) {
           }
         }
 
-        const parsed = parseEnvelope(content) ?? fallbackResponse("MOOCKY AI returned an unreadable Kimi response. Try asking again with a shorter prompt.");
+        const parsed = parseEnvelope(content) ?? fallbackResponse(`MOOCKY AI returned an unreadable ${providerDisplayName(provider)} response. Try asking again with a shorter prompt.`);
         const response = normalizeResponseForMode(parsed, conversationMode);
         write("done", { response });
         controller.close();

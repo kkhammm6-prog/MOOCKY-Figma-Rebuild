@@ -3,6 +3,14 @@ import path from "node:path";
 import { demoPersonalizedSuggestionCards, type AiConversationMode, type AiResponseEnvelope } from "../../prototype-data";
 
 export type KimiThinkingMode = "disabled" | "enabled";
+export type AiProvider = "openai" | "kimi" | "nvidia";
+
+export type AiProviderConfig = {
+  apiKey?: string;
+  baseUrl: string;
+  model: string;
+  provider: AiProvider;
+};
 export type AiRequest = {
   courseContext?: {
     courseTitle?: string;
@@ -167,6 +175,53 @@ export function getKimiThinkingMode(): KimiThinkingMode {
   const configuredMode = (process.env.MOONSHOT_THINKING_MODE ?? process.env.MOONSHOT_THINKING ?? "").toLowerCase();
 
   return configuredMode === "enabled" || configuredMode === "true" || configuredMode === "1" ? "enabled" : "disabled";
+}
+
+export function getAiProvider(): AiProvider {
+  const configuredProvider = process.env.AI_PROVIDER?.toLowerCase();
+
+  if (configuredProvider === "nvidia" || configuredProvider === "kimi" || configuredProvider === "openai") {
+    return configuredProvider;
+  }
+
+  return process.env.MOONSHOT_API_KEY ? "kimi" : "openai";
+}
+
+export function getAiProviderConfig(): AiProviderConfig {
+  const provider = getAiProvider();
+
+  if (provider === "nvidia") {
+    return {
+      apiKey: process.env.NVIDIA_API_KEY,
+      baseUrl: (process.env.NVIDIA_BASE_URL ?? "https://integrate.api.nvidia.com/v1").replace(/\/$/, ""),
+      model: process.env.NVIDIA_MODEL ?? "moonshotai/kimi-k2.6",
+      provider,
+    };
+  }
+
+  if (provider === "kimi") {
+    return {
+      apiKey: process.env.MOONSHOT_API_KEY,
+      baseUrl: (process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1").replace(/\/$/, ""),
+      model: process.env.MOONSHOT_MODEL ?? "kimi-k2.5",
+      provider,
+    };
+  }
+
+  return {
+    apiKey: process.env.OPENAI_API_KEY,
+    baseUrl: "https://api.openai.com/v1",
+    model: process.env.OPENAI_MODEL ?? "gpt-5.5",
+    provider,
+  };
+}
+
+export function providerDisplayName(provider: AiProvider) {
+  if (provider === "nvidia") {
+    return "NVIDIA NIM";
+  }
+
+  return provider === "kimi" ? "Kimi" : "OpenAI";
 }
 
 export async function loadSystemPrompt() {

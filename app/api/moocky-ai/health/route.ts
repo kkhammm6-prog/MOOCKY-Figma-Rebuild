@@ -1,27 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getKimiThinkingMode, loadSystemPrompt } from "../shared";
+import { getAiProviderConfig, getKimiThinkingMode, loadSystemPrompt, providerDisplayName } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 function providerConfig() {
-  const provider = process.env.AI_PROVIDER ?? (process.env.MOONSHOT_API_KEY ? "kimi" : "openai");
-  const kimiBaseUrl = (process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1").replace(/\/$/, "");
+  const config = getAiProviderConfig();
 
   return {
-    provider,
-    kimiBaseUrl,
-    kimiHost: new URL(kimiBaseUrl).host,
-    kimiModel: process.env.MOONSHOT_MODEL ?? "kimi-k2.5",
+    provider: config.provider,
+    providerName: providerDisplayName(config.provider),
+    providerBaseUrl: config.baseUrl,
+    providerHost: new URL(config.baseUrl).host,
+    providerModel: config.model,
     kimiThinkingMode: getKimiThinkingMode(),
     hasMoonshotApiKey: Boolean(process.env.MOONSHOT_API_KEY),
+    hasNvidiaApiKey: Boolean(process.env.NVIDIA_API_KEY),
     hasOpenAiApiKey: Boolean(process.env.OPENAI_API_KEY),
   };
 }
 
 export async function GET(request: NextRequest) {
   const config = providerConfig();
-  const shouldProbeKimi = request.nextUrl.searchParams.get("probe") === "kimi";
+  const probeProvider = request.nextUrl.searchParams.get("probe");
+  const shouldProbeProvider = probeProvider === config.provider && config.provider !== "openai";
   let promptLoaded = false;
   let promptLength = 0;
   let kimiProbe: { ok: boolean; status?: number; parsed?: boolean; detail?: string } | undefined;
@@ -43,24 +45,25 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  if (shouldProbeKimi) {
-    if (!process.env.MOONSHOT_API_KEY) {
-      kimiProbe = { ok: false, detail: "MOONSHOT_API_KEY is missing." };
+  if (shouldProbeProvider) {
+    const providerConfig = getAiProviderConfig();
+
+    if (!providerConfig.apiKey) {
+      kimiProbe = { ok: false, detail: `${providerDisplayName(providerConfig.provider)} API key is missing.` };
     } else {
       try {
-        const response = await fetch(`${config.kimiBaseUrl}/chat/completions`, {
+        const response = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
           body: JSON.stringify({
-            model: config.kimiModel,
+            model: providerConfig.model,
             messages: [
               { role: "system", content: "Return only valid JSON." },
               { role: "user", content: "Return {\"ok\":true}" },
             ],
             response_format: { type: "json_object" },
-            thinking: { type: config.kimiThinkingMode },
             max_tokens: 80,
           }),
           headers: {
-            Authorization: `Bearer ${process.env.MOONSHOT_API_KEY}`,
+            Authorization: `Bearer ${providerConfig.apiKey}`,
             "Content-Type": "application/json",
           },
           method: "POST",
@@ -95,7 +98,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json(
     {
-      ok: promptLoaded && (!shouldProbeKimi || Boolean(kimiProbe?.ok)),
+      ok: promptLoaded && (!shouldProbeProvider || Boolean(kimiProbe?.ok)),
       ...config,
       promptLoaded,
       promptLength,

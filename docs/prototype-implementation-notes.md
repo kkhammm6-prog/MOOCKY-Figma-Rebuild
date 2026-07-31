@@ -26,9 +26,10 @@ This document records implementation lessons from the MOOCKY landing and AI chat
 
 ## AI API Shape
 
-- The prototype route calls OpenAI or Kimi from the server only.
-- `OPENAI_API_KEY` and `MOONSHOT_API_KEY` must remain server-side.
-- `OPENAI_MODEL` and `MOONSHOT_MODEL` can override the defaults.
+- The prototype route calls OpenAI, Moonshot Kimi, or NVIDIA NIM from the server only.
+- `OPENAI_API_KEY`, `MOONSHOT_API_KEY`, and `NVIDIA_API_KEY` must remain server-side.
+- `OPENAI_MODEL`, `MOONSHOT_MODEL`, and `NVIDIA_MODEL` can override the defaults.
+- NVIDIA NIM uses `AI_PROVIDER=nvidia`, `NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1`, and the multimodal `moonshotai/kimi-k2.6` model by default.
 - For demo speed, Kimi thinking is disabled by default with `thinking: { type: "disabled" }`.
 - To restore real provider reasoning, set `MOONSHOT_THINKING_MODE=enabled`; only then should the stream forward `reasoning_content` as UI `reasoning_delta`.
 - The UI owns thinking animation, thought duration, feedback state, and full-screen threshold behavior.

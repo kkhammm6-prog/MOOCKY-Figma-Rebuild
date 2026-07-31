@@ -253,6 +253,9 @@ Environment variables:
 - `MOONSHOT_API_KEY`
 - `MOONSHOT_MODEL`
 - `MOONSHOT_THINKING_MODE`
+- `NVIDIA_API_KEY`
+- `NVIDIA_MODEL`
+- `NVIDIA_BASE_URL`
 
 Keys remain server-side. `docs/ai-system-prompt.md` must be included in the deployment package.
 
