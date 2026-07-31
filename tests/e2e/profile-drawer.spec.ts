@@ -20,6 +20,13 @@ test("authenticated learner can open and close the persistent profile drawer", a
   await expect(drawer.getByText("Nature Architecture")).toBeVisible();
   await expect(drawer.getByRole("link", { name: "Profile & settings" })).toHaveAttribute("href", "/settings");
 
+  const firstStatOrder = await drawer.locator(".profile-stat").first().evaluate((card) => {
+    const label = card.querySelector("span")?.getBoundingClientRect();
+    const value = card.querySelector("strong")?.getBoundingClientRect();
+    return { labelTop: label?.top, valueTop: value?.top };
+  });
+  expect(firstStatOrder.labelTop).toBeLessThan(firstStatOrder.valueTop ?? 0);
+
   await page.keyboard.press("Escape");
   await expect(drawer).toHaveCount(0);
 });

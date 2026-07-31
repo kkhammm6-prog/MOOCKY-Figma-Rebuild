@@ -85,8 +85,8 @@ export function ProfileDrawer({ isOpen, onClose, theme }: ProfileDrawerProps) {
             <div className="profile-stat-grid">
               {learningStats.map((stat) => (
                 <div className="profile-stat" key={stat.label}>
-                  <strong>{stat.value}</strong>
                   <span>{stat.label}</span>
+                  <strong>{stat.value}</strong>
                 </div>
               ))}
             </div>

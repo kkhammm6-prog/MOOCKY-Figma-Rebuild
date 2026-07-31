@@ -1072,7 +1072,7 @@ button.lumen-tag:focus-visible {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   min-height: 82px;
   padding: 12px;
 }
@@ -1177,11 +1177,18 @@ button.lumen-tag:focus-visible {
   background: color-mix(in srgb, var(--accent) 12%, var(--surface));
   border-radius: 50%;
   color: var(--accent);
-  display: inline-flex;
+  display: grid;
   flex: 0 0 32px;
   height: 32px;
   justify-content: center;
+  line-height: 0;
+  place-items: center;
   width: 32px;
+}
+
+.profile-achievement-icon > .icon {
+  display: block;
+  margin: 0;
 }
 
 .profile-achievement strong,
