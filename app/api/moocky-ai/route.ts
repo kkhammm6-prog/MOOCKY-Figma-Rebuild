@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildInputPayload, fallbackCourseResponse, fallbackResponse, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, responseSchema, type AiRequest } from "./shared";
+import { buildInputPayload, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, getNvidiaRequestOptions, loadSystemPrompt, natureArchitectureDemoResponse, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "./shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -79,15 +79,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(fallbackResponse("Ask a concise learning question and MOOCKY AI can help route you toward useful course context."), { status: 400 });
   }
 
-  const provider = process.env.AI_PROVIDER ?? (process.env.MOONSHOT_API_KEY ? "kimi" : "openai");
-  const apiKey = provider === "kimi" ? process.env.MOONSHOT_API_KEY : process.env.OPENAI_API_KEY;
+  const providerConfig = getAiProviderConfig();
+  const { apiKey, provider } = providerConfig;
 
   if (!apiKey) {
     if (body.surface === "courseRail" || body.courseContext) {
       return NextResponse.json(fallbackCourseResponse(body, userMessage), { status: 200 });
     }
 
-    const fallback = fallbackResponse(`MOOCKY AI is wired for the ${provider === "kimi" ? "Kimi" : "OpenAI"} API, but this local prototype is missing the server API key. Add the key and retry this question.`);
+    const fallback = fallbackResponse(`MOOCKY AI is wired for the ${providerDisplayName(provider)} API, but this deployment is missing the server API key. Add the key and retry this question.`);
     return NextResponse.json(normalizeResponseForMode(fallback, conversationMode), { status: 200 });
   }
 
@@ -95,20 +95,31 @@ export async function POST(request: NextRequest) {
     const systemPrompt = await loadSystemPrompt();
     const inputPayload = buildInputPayload(body, userMessage);
 
-  if (provider === "kimi") {
-    const kimiBaseUrl = (process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1").replace(/\/$/, "");
+  if (provider !== "openai") {
     const kimiThinkingMode = getKimiThinkingMode();
-    const kimiResponse = await fetch(`${kimiBaseUrl}/chat/completions`, {
-      body: JSON.stringify({
-        model: process.env.MOONSHOT_MODEL ?? "kimi-k2.5",
+    const compatibleRequest: Record<string, unknown> = {
+        model: providerConfig.model,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(inputPayload) },
         ],
-        response_format: { type: "json_object" },
-        thinking: { type: kimiThinkingMode },
         max_tokens: 2400,
-      }),
+    };
+
+    if (provider === "kimi" || provider === "openrouter") {
+      compatibleRequest.response_format = { type: "json_object" };
+    }
+
+    if (provider === "kimi") {
+      compatibleRequest.thinking = { type: kimiThinkingMode };
+    }
+
+    if (provider === "nvidia") {
+      Object.assign(compatibleRequest, getNvidiaRequestOptions(providerConfig.model));
+    }
+
+    const compatibleResponse = await fetch(getChatCompletionsUrl(providerConfig.baseUrl), {
+      body: JSON.stringify(compatibleRequest),
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
@@ -116,15 +127,15 @@ export async function POST(request: NextRequest) {
       method: "POST",
     });
 
-    if (!kimiResponse.ok) {
-      const detail = await kimiResponse.text().catch(() => "");
-      console.error("Kimi request failed", { status: kimiResponse.status, detail: detail.slice(0, 500) });
-      return NextResponse.json(fallbackResponse(`MOOCKY AI could not complete this request through Kimi. API status: ${kimiResponse.status}.`), { status: 200 });
+    if (!compatibleResponse.ok) {
+      const detail = await compatibleResponse.text().catch(() => "");
+      console.error(`${providerDisplayName(provider)} request failed`, { status: compatibleResponse.status, detail: detail.slice(0, 500) });
+      return NextResponse.json(fallbackResponse(`MOOCKY AI could not complete this request through ${providerDisplayName(provider)}. API status: ${compatibleResponse.status}.`), { status: 200 });
     }
 
-    const responsePayload = await kimiResponse.json();
+    const responsePayload = await compatibleResponse.json();
     const parsed = parseEnvelope(extractChatCompletionText(responsePayload));
-    const payload = parsed ?? fallbackResponse("MOOCKY AI returned an unreadable Kimi response. Try asking again with a shorter prompt.");
+    const payload = parsed ?? natureArchitectureDemoResponse(body.surface ?? "heroPrompt");
     return NextResponse.json(normalizeResponseForMode(payload, conversationMode), { status: 200 });
   }
 
@@ -157,7 +168,7 @@ export async function POST(request: NextRequest) {
 
   const responsePayload = await openAiResponse.json();
   const parsed = parseEnvelope(extractOutputText(responsePayload));
-  const payload = parsed ?? fallbackResponse("MOOCKY AI returned an unreadable prototype response. Try asking again with a shorter prompt.");
+  const payload = parsed ?? natureArchitectureDemoResponse(body.surface ?? "heroPrompt");
     return NextResponse.json(normalizeResponseForMode(payload, conversationMode), { status: 200 });
   } catch (error) {
     console.error("MOOCKY AI route failed", { message: error instanceof Error ? error.message : String(error) });

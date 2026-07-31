@@ -3,6 +3,14 @@ import path from "node:path";
 import { demoPersonalizedSuggestionCards, type AiConversationMode, type AiResponseEnvelope } from "../../prototype-data";
 
 export type KimiThinkingMode = "disabled" | "enabled";
+export type AiProvider = "openai" | "kimi" | "nvidia" | "openrouter";
+
+export type AiProviderConfig = {
+  apiKey?: string;
+  baseUrl: string;
+  model: string;
+  provider: AiProvider;
+};
 export type AiRequest = {
   courseContext?: {
     courseTitle?: string;
@@ -169,6 +177,101 @@ export function getKimiThinkingMode(): KimiThinkingMode {
   return configuredMode === "enabled" || configuredMode === "true" || configuredMode === "1" ? "enabled" : "disabled";
 }
 
+export const natureArchitectureRecommendation = demoPersonalizedSuggestionCards.find((card) => card.id === "nature-architecture")!;
+
+export function natureArchitectureDemoResponse(surface: AiResponseEnvelope["surface"] = "heroPrompt"): AiResponseEnvelope {
+  return {
+    answerKind: "answer",
+    surface,
+    conversationTitle: "Nature Architecture",
+    answerMarkdown:
+      "For your next learning step, I recommend **Nature Architecture**. It connects systems thinking with living patterns, helping you translate complex relationships into clear structural ideas.\n\nOpen the course to explore *Patterns in Living Systems* and begin building a practical framework for your own work.",
+    contextTags: [],
+    followUpChips: ["Why this course?", "Explore the course", "Show learning outcomes"],
+    courseRecommendationCards: [natureArchitectureRecommendation],
+  };
+}
+
+export function getAiProvider(): AiProvider {
+  const configuredProvider = process.env.AI_PROVIDER?.toLowerCase();
+
+  if (configuredProvider === "nvidia" || configuredProvider === "kimi" || configuredProvider === "openai" || configuredProvider === "openrouter") {
+    return configuredProvider;
+  }
+
+  if (process.env.OPENROUTER_API_KEY) {
+    return "openrouter";
+  }
+
+  return process.env.MOONSHOT_API_KEY ? "kimi" : "openai";
+}
+
+export function getAiProviderConfig(): AiProviderConfig {
+  const provider = getAiProvider();
+
+  if (provider === "nvidia") {
+    return {
+      apiKey: process.env.NVIDIA_API_KEY,
+      baseUrl: (process.env.NVIDIA_BASE_URL ?? "https://integrate.api.nvidia.com/v1").replace(/\/$/, ""),
+      model: process.env.NVIDIA_MODEL ?? "moonshotai/kimi-k2.6",
+      provider,
+    };
+  }
+
+  if (provider === "openrouter") {
+    return {
+      apiKey: process.env.OPENROUTER_API_KEY,
+      baseUrl: (process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1").replace(/\/$/, ""),
+      model: process.env.OPENROUTER_MODEL ?? "google/gemma-4-26b-a4b-it:free",
+      provider,
+    };
+  }
+
+  if (provider === "kimi") {
+    return {
+      apiKey: process.env.MOONSHOT_API_KEY,
+      baseUrl: (process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1").replace(/\/$/, ""),
+      model: process.env.MOONSHOT_MODEL ?? "kimi-k2.5",
+      provider,
+    };
+  }
+
+  return {
+    apiKey: process.env.OPENAI_API_KEY,
+    baseUrl: "https://api.openai.com/v1",
+    model: process.env.OPENAI_MODEL ?? "gpt-5.5",
+    provider,
+  };
+}
+
+/** Accept either an API base URL or the full OpenAI-compatible chat endpoint. */
+export function getChatCompletionsUrl(baseUrl: string) {
+  const normalizedBaseUrl = baseUrl.replace(/\/chat\/completions\/?$/, "");
+  return `${normalizedBaseUrl}/chat/completions`;
+}
+
+export function getNvidiaRequestOptions(model: string): Record<string, unknown> {
+  // Gemma 4 can spend its entire request window reasoning before emitting text.
+  // The learning-assistant UI needs a responsive answer by default.
+  if (model.startsWith("google/gemma-4-")) {
+    return { chat_template_kwargs: { enable_thinking: false } };
+  }
+
+  return {};
+}
+
+export function providerDisplayName(provider: AiProvider) {
+  if (provider === "nvidia") {
+    return "NVIDIA NIM";
+  }
+
+  if (provider === "openrouter") {
+    return "OpenRouter";
+  }
+
+  return provider === "kimi" ? "Kimi" : "OpenAI";
+}
+
 export async function loadSystemPrompt() {
   const promptPath = path.join(process.cwd(), "docs", "ai-system-prompt.md");
   const markdown = await readFile(promptPath, "utf8");
@@ -180,24 +283,69 @@ export function parseEnvelope(outputText: string): AiResponseEnvelope | null {
   const trimmed = outputText.trim();
   const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
   const jsonText = fenced?.[1] ?? trimmed;
+  const candidates = [jsonText];
 
-  try {
-    const parsed = JSON.parse(jsonText) as Partial<AiResponseEnvelope> & {
-      courseRecommendationChips?: unknown;
-    };
+  // Free providers can prepend a short note or <think> block despite the JSON instruction.
+  // Recover the first balanced JSON object instead of discarding an otherwise usable answer.
+  const objectStart = jsonText.indexOf("{");
+  if (objectStart > 0) {
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
 
-    return {
-      answerKind: parsed.answerKind ?? "answer",
-      surface: parsed.surface ?? "heroPrompt",
-      conversationTitle: parsed.conversationTitle || "MOOCKY AI",
-      answerMarkdown: parsed.answerMarkdown ?? "",
-      contextTags: parsed.contextTags ?? [],
-      followUpChips: parsed.followUpChips ?? [],
-      courseRecommendationCards: parsed.courseRecommendationCards ?? [],
-    };
-  } catch {
-    return null;
+    for (let index = objectStart; index < jsonText.length; index += 1) {
+      const character = jsonText[index];
+
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (character === "\\") {
+          escaped = true;
+        } else if (character === '"') {
+          inString = false;
+        }
+        continue;
+      }
+
+      if (character === '"') {
+        inString = true;
+      } else if (character === "{") {
+        depth += 1;
+      } else if (character === "}") {
+        depth -= 1;
+        if (depth === 0) {
+          candidates.push(jsonText.slice(objectStart, index + 1));
+          break;
+        }
+      }
+    }
   }
+
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate) as Partial<AiResponseEnvelope> & {
+        courseRecommendationChips?: unknown;
+      };
+
+      if (typeof parsed.answerMarkdown !== "string") {
+        continue;
+      }
+
+      return {
+        answerKind: parsed.answerKind ?? "answer",
+        surface: parsed.surface ?? "heroPrompt",
+        conversationTitle: parsed.conversationTitle || "MOOCKY AI",
+        answerMarkdown: parsed.answerMarkdown,
+        contextTags: parsed.contextTags ?? [],
+        followUpChips: parsed.followUpChips ?? [],
+        courseRecommendationCards: parsed.courseRecommendationCards ?? [],
+      };
+    } catch {
+      // Try the next recovered candidate.
+    }
+  }
+
+  return null;
 }
 
 export function buildInputPayload(body: AiRequest, userMessage: string) {
@@ -245,11 +393,11 @@ export function buildInputPayload(body: AiRequest, userMessage: string) {
 
 export const modeInstructions: Record<AiConversationMode, string> = {
   newChat:
-    "Use the default MOOCKY AI behavior. Answer freely, stay oriented around learning, create a concise conversationTitle after the first meaningful user message, and keep courseRecommendationCards empty.",
+    "Use the default MOOCKY AI behavior. Answer freely, stay oriented around learning, create a concise conversationTitle after the first meaningful user message, and recommend Nature Architecture as the fixed demonstration course.",
   personalizedSuggestion:
-    "Run a purpose-driven course discovery conversation. Break down the learner's goal, recommend relevant course directions in answerMarkdown, and keep courseRecommendationCards empty. The application will attach the fixed four-card Personalized Suggestion set after your answer.",
+    "Run a purpose-driven course discovery conversation. Break down the learner's goal, connect it to Nature Architecture, and recommend Nature Architecture as the fixed demonstration course.",
   careerPath:
-    "Guide a career-path conversation. Ask or infer the learner's current work or study state, clarify the kind of person they want to become, and provide practical learning guidance. Keep courseRecommendationCards empty unless a future UI mode explicitly asks for course cards.",
+    "Guide a career-path conversation. Ask or infer the learner's current work or study state, clarify the kind of person they want to become, provide practical learning guidance, and recommend Nature Architecture as the fixed demonstration course.",
 };
 
 function uniqueCards(cards: AiResponseEnvelope["courseRecommendationCards"]) {
@@ -267,24 +415,13 @@ function uniqueCards(cards: AiResponseEnvelope["courseRecommendationCards"]) {
   });
 }
 
-export function fallbackCardsForMode(conversationMode: AiConversationMode) {
-  if (conversationMode !== "personalizedSuggestion") {
-    return [];
-  }
-
-  return demoPersonalizedSuggestionCards;
+export function fallbackCardsForMode(_conversationMode: AiConversationMode) {
+  return [natureArchitectureRecommendation];
 }
 
-export function normalizeResponseForMode(response: AiResponseEnvelope, conversationMode: AiConversationMode): AiResponseEnvelope {
-  if (response.answerKind !== "answer" || conversationMode !== "personalizedSuggestion") {
-    return {
-      ...response,
-      courseRecommendationCards: [],
-    };
-  }
-
+export function normalizeResponseForMode(response: AiResponseEnvelope, _conversationMode: AiConversationMode): AiResponseEnvelope {
   return {
     ...response,
-    courseRecommendationCards: uniqueCards([...response.courseRecommendationCards, ...demoPersonalizedSuggestionCards]).slice(0, 4),
+    courseRecommendationCards: [natureArchitectureRecommendation],
   };
 }
