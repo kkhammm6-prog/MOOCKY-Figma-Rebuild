@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "../shared";
+import { buildInputPayload, fallbackCardsForMode, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, getNvidiaRequestOptions, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -275,6 +275,10 @@ export async function POST(request: NextRequest) {
         if (provider === "kimi") {
           compatibleRequest.response_format = { type: "json_object" };
           compatibleRequest.thinking = { type: kimiThinkingMode };
+        }
+
+        if (provider === "nvidia") {
+          Object.assign(compatibleRequest, getNvidiaRequestOptions(providerConfig.model));
         }
 
         const compatibleResponse = await fetch(getChatCompletionsUrl(providerConfig.baseUrl), {

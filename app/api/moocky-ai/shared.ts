@@ -222,6 +222,16 @@ export function getChatCompletionsUrl(baseUrl: string) {
   return `${normalizedBaseUrl}/chat/completions`;
 }
 
+export function getNvidiaRequestOptions(model: string): Record<string, unknown> {
+  // Gemma 4 can spend its entire request window reasoning before emitting text.
+  // The learning-assistant UI needs a responsive answer by default.
+  if (model.startsWith("google/gemma-4-")) {
+    return { chat_template_kwargs: { enable_thinking: false } };
+  }
+
+  return {};
+}
+
 export function providerDisplayName(provider: AiProvider) {
   if (provider === "nvidia") {
     return "NVIDIA NIM";

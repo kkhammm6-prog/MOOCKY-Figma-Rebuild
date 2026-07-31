@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, loadSystemPrompt, providerDisplayName } from "../shared";
+import { getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, getNvidiaRequestOptions, loadSystemPrompt, providerDisplayName } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -63,6 +63,10 @@ export async function GET(request: NextRequest) {
 
         if (providerConfig.provider === "kimi") {
           probeRequest.response_format = { type: "json_object" };
+        }
+
+        if (providerConfig.provider === "nvidia") {
+          Object.assign(probeRequest, getNvidiaRequestOptions(providerConfig.model));
         }
 
         const response = await fetch(getChatCompletionsUrl(providerConfig.baseUrl), {
