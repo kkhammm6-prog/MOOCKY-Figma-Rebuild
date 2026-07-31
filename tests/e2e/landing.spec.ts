@@ -423,3 +423,14 @@ test("landing chatbox submits with Enter only when ready", async ({ page }) => {
   await input.press("Enter");
   await expect(page).toHaveURL(/\/ai\?question=design%20systems$/);
 });
+
+test("landing shortcut prompts open AI chat and submit the matching prompt", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.clear());
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Send Boost My Career Path prompt to MOOCKY AI" }).click();
+
+  await expect(page).toHaveURL(
+    /\/ai\?question=Help%20me%20create%20a%20learning%20path%20that%20will%20advance%20my%20career\.$/,
+  );
+});

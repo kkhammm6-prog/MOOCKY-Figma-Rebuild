@@ -5,13 +5,30 @@ export type ThemeName = "light" | "dark";
 export type ChatChip = {
   label: string;
   icon: string;
+  prompt: string;
 };
 
 export const chatChips: ChatChip[] = [
-  { label: "Boost My Career Path", icon: "route.svg" },
-  { label: "Build My Interest", icon: "fishing-rod.svg" },
-  { label: "Analyze my course", icon: "book-open-check.svg" },
-  { label: "Inspire Me", icon: "wand-sparkles.svg" },
+  {
+    label: "Boost My Career Path",
+    icon: "route.svg",
+    prompt: "Help me create a learning path that will advance my career.",
+  },
+  {
+    label: "Build My Interest",
+    icon: "fishing-rod.svg",
+    prompt: "Help me discover learning topics that match my interests.",
+  },
+  {
+    label: "Analyze my course",
+    icon: "book-open-check.svg",
+    prompt: "Analyze my current courses and recommend what I should learn next.",
+  },
+  {
+    label: "Inspire Me",
+    icon: "wand-sparkles.svg",
+    prompt: "Inspire me with an unexpected learning direction I could explore next.",
+  },
 ];
 
 export const popularCourses: Array<{ href?: string; image: string; title: string }> = [

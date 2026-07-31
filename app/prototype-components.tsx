@@ -195,10 +195,20 @@ function Chatbox({ initialLabel = "The best course for my career" }: { initialLa
 }
 
 function PromptChips() {
+  const sendPromptToAi = (prompt: string) => {
+    window.location.href = `/ai?question=${encodeURIComponent(prompt)}`;
+  };
+
   return (
     <div className="prompt-chips">
       {chatChips.map((chip) => (
-        <button className="prompt-chip" key={chip.label} type="button">
+        <button
+          aria-label={`Send ${chip.label} prompt to MOOCKY AI`}
+          className="prompt-chip"
+          key={chip.label}
+          onClick={() => sendPromptToAi(chip.prompt)}
+          type="button"
+        >
           <Icon name={chip.icon} />
           <span>{chip.label}</span>
         </button>
