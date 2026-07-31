@@ -8,10 +8,10 @@ import { Button } from "../components/Button";
 import { CompactProductFooter } from "../components/CompactProductFooter";
 import { LumenIcon, type LumenIconName } from "../components/LumenIcon";
 import { LogoMark } from "../components/LogoMark";
+import { useThemeState } from "../hooks/useThemeState";
 import type { AiResponseEnvelope, ThemeName } from "../prototype-data";
 import styles from "./course.module.css";
 
-const THEME_KEY = "moocky-theme";
 const COURSE_AI_HANDOFF_KEY = "moocky-course-ai-handoff-v1";
 const YOUTUBE_VIDEO_ID = "eMlx5fFNoYc";
 const YOUTUBE_SOURCE_URL = "https://www.3blue1brown.com/lessons/attention/";
@@ -517,24 +517,6 @@ async function exitDocumentFullscreen() {
   }
 
   await fullscreenDocument.webkitExitFullscreen?.();
-}
-
-function useThemeState() {
-  const [theme, setTheme] = useState<ThemeName>("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
-    }
-  }, []);
-
-  const updateTheme = (nextTheme: ThemeName) => {
-    setTheme(nextTheme);
-    window.localStorage.setItem(THEME_KEY, nextTheme);
-  };
-
-  return [theme, updateTheme] as const;
 }
 
 function CourseHeader({ theme, onThemeToggle }: { theme: ThemeName; onThemeToggle: () => void }) {

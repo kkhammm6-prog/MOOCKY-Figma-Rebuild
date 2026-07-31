@@ -7,10 +7,10 @@ import { Button } from "../components/Button";
 import { LumenIcon } from "../components/LumenIcon";
 import { LogoMark } from "../components/LogoMark";
 import { useDemoAuthState } from "../hooks/useDemoAuthState";
+import { useThemeState } from "../hooks/useThemeState";
 import type { AiConversationMode, AiResponseEnvelope, ThemeName } from "../prototype-data";
 import { demoPersonalizedSuggestionCards, fallbackAiResponse } from "../prototype-data";
 
-const THEME_KEY = "moocky-theme";
 const WORKSPACE_KEY = "moocky-ai-chat-workspace-session-v1";
 const COURSE_AI_HANDOFF_KEY = "moocky-course-ai-handoff-v1";
 const ANSWER_TYPEWRITER_TICK_MS = 8;
@@ -88,24 +88,6 @@ const starterPromptChips: Record<AiConversationMode, string[]> = {
 
 function createId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function useThemeState() {
-  const [theme, setTheme] = useState<ThemeName>("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
-    }
-  }, []);
-
-  const updateTheme = (nextTheme: ThemeName) => {
-    setTheme(nextTheme);
-    window.localStorage.setItem(THEME_KEY, nextTheme);
-  };
-
-  return [theme, updateTheme] as const;
 }
 
 function createConversation(mode: AiConversationMode, title = modeLabels[mode]): AiConversation {

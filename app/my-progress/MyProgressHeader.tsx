@@ -4,16 +4,9 @@ import { useState } from "react";
 import { AuthenticatedHeaderControls } from "../components/AuthenticatedHeaderControls";
 import { LumenIcon } from "../components/LumenIcon";
 import { LogoMark } from "../components/LogoMark";
+import type { AppTheme } from "../hooks/useThemeState";
 
-function toggleDarkPreview() {
-  const toggle = document.getElementById("my-progress-theme-toggle") as HTMLInputElement | null;
-
-  if (toggle) {
-    toggle.checked = !toggle.checked;
-  }
-}
-
-export function MyProgressHeader() {
+export function MyProgressHeader({ theme, onThemeToggle }: { theme: AppTheme; onThemeToggle: () => void }) {
   const [isSearchActive, setIsSearchActive] = useState(false);
 
   return (
@@ -29,7 +22,11 @@ export function MyProgressHeader() {
           </a>
         </div>
         <div className="header-actions">
-          <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={toggleDarkPreview} themeToggleLabel="Toggle dark preview" />
+          <AuthenticatedHeaderControls
+            onSearchActiveChange={setIsSearchActive}
+            onThemeToggle={onThemeToggle}
+            themeToggleLabel={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          />
         </div>
       </div>
     </header>

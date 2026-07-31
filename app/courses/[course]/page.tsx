@@ -2,17 +2,18 @@
 
 import { type CSSProperties, useState } from "react";
 import { useParams } from "next/navigation";
+import { AuthenticatedHeaderControls } from "../../components/AuthenticatedHeaderControls";
 import { Button } from "../../components/Button";
 import { CompactProductFooter } from "../../components/CompactProductFooter";
 import { LogoMark } from "../../components/LogoMark";
 import { LumenIcon } from "../../components/LumenIcon";
 import { Tag } from "../../components/Tag";
 import { Text } from "../../components/Text";
+import { useDemoAuthState } from "../../hooks/useDemoAuthState";
 import { useRevealOnView } from "../../hooks/useRevealOnView";
+import { useThemeState, type AppTheme } from "../../hooks/useThemeState";
 import { getPublicCourseDetail, included, type PublicCourseDetail, type PublicCourseModule } from "../public-course-data";
 import styles from "./public-course-detail.module.css";
-
-type ThemeName = "light" | "dark";
 
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -39,27 +40,42 @@ function DisplayTitle({
   );
 }
 
-function PublicHeader({ onThemeToggle, theme }: { onThemeToggle: () => void; theme: ThemeName }) {
+function PublicHeader({ onThemeToggle, theme }: { onThemeToggle: () => void; theme: AppTheme }) {
+  const [isAuthenticated, setIsAuthenticated] = useDemoAuthState();
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const themeToggleLabel = `Switch to ${theme === "light" ? "dark" : "light"} mode`;
 
   return (
-    <header className="marketing-header is-guest">
+    <header className={`marketing-header ${isAuthenticated ? "is-authenticated" : "is-guest"} ${isAuthenticated && isSearchActive ? "is-searching" : ""}`}>
       <div className="marketing-header-inner">
         <div className="header-left">
           <a className="logo-lockup" href="/" aria-label="MOOCKY home">
             <LogoMark />
           </a>
-          <button className="prototype-button prototype-button-ghost" type="button">
-            <LumenIcon name="loader" />
-            <span>MyProgress</span>
-          </button>
+          {isAuthenticated ? (
+            <a className="prototype-button prototype-button-ghost" href="/my-progress">
+              <LumenIcon name="loader" />
+              <span>MyProgress</span>
+            </a>
+          ) : (
+            <button className="prototype-button prototype-button-ghost" type="button">
+              <LumenIcon name="loader" />
+              <span>MyProgress</span>
+            </button>
+          )}
         </div>
         <div className="header-actions">
-          <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>
-            <LumenIcon name="eclipse" />
-          </button>
-          <Button kind="auxiliaryAction" label="Log In" />
-          <Button href="/" kind="primaryAction" label="Explore MOOCKY" />
+          {isAuthenticated ? (
+            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} themeToggleLabel={themeToggleLabel} />
+          ) : (
+            <>
+              <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>
+                <LumenIcon name="eclipse" />
+              </button>
+              <Button kind="auxiliaryAction" label="Log In" onClick={() => setIsAuthenticated(true)} />
+              <Button href="/" kind="primaryAction" label="Explore MOOCKY" />
+            </>
+          )}
         </div>
       </div>
     </header>
@@ -157,7 +173,7 @@ function readCourseParam(courseParam: string | string[] | undefined) {
 }
 
 export default function PublicCourseDetailPage() {
-  const [theme, setTheme] = useState<ThemeName>("light");
+  const [theme, setTheme] = useThemeState();
   const params = useParams<{ course?: string | string[] }>();
   const course = getPublicCourseDetail(readCourseParam(params.course));
   useRevealOnView();

@@ -11,6 +11,7 @@ import { SiteFooter } from "./components/SiteFooter";
 import { Text } from "./components/Text";
 import { useDemoAuthState } from "./hooks/useDemoAuthState";
 import { useRevealOnView } from "./hooks/useRevealOnView";
+import { useThemeState } from "./hooks/useThemeState";
 import {
   AiResponseEnvelope,
   asset,
@@ -25,28 +26,9 @@ import {
   ThemeName,
 } from "./prototype-data";
 
-const THEME_KEY = "moocky-theme";
 const CHATS_KEY = "moocky-chat-titles";
 
 type DisplayTitleSize = "large" | "medium" | "compact" | "mobile";
-
-function useThemeState() {
-  const [theme, setTheme] = useState<ThemeName>("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
-    }
-  }, []);
-
-  const updateTheme = (nextTheme: ThemeName) => {
-    setTheme(nextTheme);
-    window.localStorage.setItem(THEME_KEY, nextTheme);
-  };
-
-  return [theme, updateTheme] as const;
-}
 
 function Icon({ name, className = "" }: { name: string; className?: string }) {
   return <LumenIcon className={className} name={name} />;

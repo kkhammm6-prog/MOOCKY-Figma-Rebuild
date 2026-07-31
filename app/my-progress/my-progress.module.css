@@ -8,18 +8,6 @@
   min-height: 100svh;
 }
 
-.themeToggle {
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-}
-
 .page {
   --canvas: var(--canvas-light);
   --surface: var(--surface-light);
@@ -51,7 +39,7 @@
   overflow-x: hidden;
 }
 
-.themeToggle:checked ~ .page {
+.themeDark .page {
   --canvas: var(--canvas-dark);
   --surface: var(--surface-dark);
   --surface-soft: rgba(29, 29, 33, 0.78);
