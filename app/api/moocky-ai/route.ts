@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildInputPayload, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "./shared";
+import { buildInputPayload, fallbackCourseResponse, fallbackResponse, getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, loadSystemPrompt, normalizeResponseForMode, parseEnvelope, providerDisplayName, responseSchema, type AiRequest } from "./shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       compatibleRequest.thinking = { type: kimiThinkingMode };
     }
 
-    const compatibleResponse = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
+    const compatibleResponse = await fetch(getChatCompletionsUrl(providerConfig.baseUrl), {
       body: JSON.stringify(compatibleRequest),
       headers: {
         Authorization: `Bearer ${apiKey}`,

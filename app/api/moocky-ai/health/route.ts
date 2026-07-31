@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAiProviderConfig, getKimiThinkingMode, loadSystemPrompt, providerDisplayName } from "../shared";
+import { getAiProviderConfig, getChatCompletionsUrl, getKimiThinkingMode, loadSystemPrompt, providerDisplayName } from "../shared";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
           probeRequest.response_format = { type: "json_object" };
         }
 
-        const response = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
+        const response = await fetch(getChatCompletionsUrl(providerConfig.baseUrl), {
           body: JSON.stringify(probeRequest),
           headers: {
             Authorization: `Bearer ${providerConfig.apiKey}`,

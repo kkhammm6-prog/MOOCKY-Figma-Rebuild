@@ -216,6 +216,12 @@ export function getAiProviderConfig(): AiProviderConfig {
   };
 }
 
+/** Accept either an API base URL or the full OpenAI-compatible chat endpoint. */
+export function getChatCompletionsUrl(baseUrl: string) {
+  const normalizedBaseUrl = baseUrl.replace(/\/chat\/completions\/?$/, "");
+  return `${normalizedBaseUrl}/chat/completions`;
+}
+
 export function providerDisplayName(provider: AiProvider) {
   if (provider === "nvidia") {
     return "NVIDIA NIM";
