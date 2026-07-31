@@ -881,7 +881,8 @@ button.lumen-tag:focus-visible {
 }
 
 .profile-drawer {
-  background: var(--surface);
+  /* The backdrop is intentionally translucent; the drawer itself must stay opaque. */
+  background: #ffffff;
   border-left: var(--stroke-default) solid var(--border-medium);
   box-shadow: -12px 0 40px rgba(0, 5, 9, 0.12);
   color: var(--text-primary);
@@ -897,6 +898,7 @@ button.lumen-tag:focus-visible {
 }
 
 .profile-drawer.theme-light {
+  background: #ffffff;
   --canvas: var(--canvas-light);
   --surface: var(--surface-light);
   --surface-active: var(--chip-hover-light);
@@ -909,6 +911,7 @@ button.lumen-tag:focus-visible {
 }
 
 .profile-drawer.theme-dark {
+  background: #000000;
   --canvas: var(--canvas-dark);
   --surface: var(--surface-dark);
   --surface-active: var(--surface-active-dark);
