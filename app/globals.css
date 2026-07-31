@@ -1072,9 +1072,9 @@ button.lumen-tag:focus-visible {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-height: 82px;
-  padding: 12px;
+  gap: 2px;
+  min-height: 58px;
+  padding: 7px 12px;
 }
 
 .profile-stat strong {
@@ -1183,12 +1183,15 @@ button.lumen-tag:focus-visible {
   justify-content: center;
   line-height: 0;
   place-items: center;
+  position: relative;
   width: 32px;
 }
 
 .profile-achievement-icon > .icon {
   display: block;
-  margin: 0;
+  inset: 0;
+  margin: auto;
+  position: absolute;
 }
 
 .profile-achievement strong,
@@ -3703,8 +3706,8 @@ button.lumen-tag:focus-visible {
   }
 
   .profile-stat {
-    min-height: 76px;
-    padding: 10px;
+    min-height: 58px;
+    padding: 7px 10px;
   }
 
   .profile-stat strong {
