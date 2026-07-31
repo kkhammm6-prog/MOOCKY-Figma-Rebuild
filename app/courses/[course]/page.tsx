@@ -133,13 +133,13 @@ function Syllabus({ modules }: { modules: PublicCourseModule[] }) {
               </div>
               <LumenIcon name="faq-chevron" />
               </button>
-              {isOpen ? (
-                <ul className={styles.lessonPreview} id={lessonListId}>
-                {module.lessons.map((lesson) => (
-                  <li key={lesson}>{lesson}</li>
-                ))}
-              </ul>
-            ) : null}
+              <div aria-hidden={!isOpen} className={styles.lessonPreview} id={lessonListId}>
+                <ul>
+                  {module.lessons.map((lesson) => (
+                    <li key={lesson}>{lesson}</li>
+                  ))}
+                </ul>
+              </div>
           </article>
           );
         })}

@@ -19,7 +19,7 @@ test("course structure expands and collapses by module", async ({ page }) => {
 
   await secondModule.click();
   await expect(secondModule).toHaveAttribute("aria-expanded", "false");
-  await expect(page.getByText("Detailing for moisture, repair, and material aging")).toHaveCount(0);
+  await expect(page.locator("#module-02-lessons")).toHaveAttribute("aria-hidden", "true");
 
   await thirdModule.focus();
   await page.keyboard.press("Space");
