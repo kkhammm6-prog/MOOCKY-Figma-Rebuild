@@ -317,11 +317,10 @@ function Recommended() {
         <Button className="small-action" kind="neutralAction" label="More" />
       </div>
       <div className="recommendation-grid">
-        {recommendations.map((course, index) => (
+        {recommendations.map((course) => (
           <RecommendedCourseCard
             description={course.description}
             imageSrc={asset(course.image)}
-            initiallyExpanded={index === 0}
             key={course.id}
             provider={course.provider}
             rating={course.rating}

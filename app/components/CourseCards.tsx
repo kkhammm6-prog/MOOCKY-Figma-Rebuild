@@ -27,7 +27,6 @@ export type RecommendedCourseCardProps = {
   href?: string;
   imageAlt?: string;
   imageSrc: string;
-  initiallyExpanded?: boolean;
   provider: string;
   rating: string;
   reviews: string;
@@ -45,7 +44,6 @@ export function RecommendedCourseCard({
   href = "/course",
   imageAlt = "",
   imageSrc,
-  initiallyExpanded = false,
   provider,
   rating,
   reviews,
@@ -56,13 +54,7 @@ export function RecommendedCourseCard({
   } as CSSProperties;
 
   return (
-    <a
-      aria-label={`Open ${title}`}
-      className={`recommendation-card${initiallyExpanded ? " is-expanded" : ""}`}
-      data-component="RecommendedCourseCard"
-      href={href}
-      style={style}
-    >
+    <a aria-label={`Open ${title}`} className="recommendation-card" data-component="RecommendedCourseCard" href={href} style={style}>
       <img alt={imageAlt} src={imageSrc} />
       <div className="recommendation-panel">
         <div className="recommendation-copy">

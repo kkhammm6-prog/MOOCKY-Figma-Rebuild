@@ -1532,7 +1532,7 @@ button.lumen-tag:focus-visible {
   will-change: height, width, transform;
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-panel {
+.recommendation-card:is(:hover, :focus-within) .recommendation-panel {
   border-radius: 0;
   bottom: -1px;
   height: var(--recommendation-panel-expanded-height);
@@ -1562,7 +1562,7 @@ button.lumen-tag:focus-visible {
   width: auto;
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title {
+.recommendation-card:is(:hover, :focus-within) .recommendation-title {
   height: 33px;
   white-space: normal;
   width: 100%;
@@ -1595,13 +1595,13 @@ button.lumen-tag:focus-visible {
   transform: translateY(12px);
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title-default {
+.recommendation-card:is(:hover, :focus-within) .recommendation-title-default {
   opacity: 0;
   transform: translateY(-12px);
   transition-duration: var(--recommendation-title-exit-duration);
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-title-expanded {
+.recommendation-card:is(:hover, :focus-within) .recommendation-title-expanded {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-title-switch-delay);
@@ -1615,8 +1615,8 @@ button.lumen-tag:focus-visible {
   transition: opacity var(--recommendation-content-motion-duration) ease-out, transform var(--recommendation-content-motion-duration) ease-out;
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-copy p,
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-copy strong {
+.recommendation-card:is(:hover, :focus-within) .recommendation-copy p,
+.recommendation-card:is(:hover, :focus-within) .recommendation-copy strong {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-panel-reveal-delay);
@@ -1660,7 +1660,7 @@ button.lumen-tag:focus-visible {
   width: 201px;
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-meta {
+.recommendation-card:is(:hover, :focus-within) .recommendation-meta {
   opacity: 1;
   transform: translateY(0);
   transition-delay: var(--recommendation-panel-reveal-delay);
@@ -1683,7 +1683,7 @@ button.lumen-tag:focus-visible {
   transition: top var(--motion-fast), transform var(--motion-fast);
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-action {
+.recommendation-card:is(:hover, :focus-within) .recommendation-action {
   top: calc(var(--recommendation-panel-expanded-height) - var(--recommendation-panel-padding-bottom) - 32px);
 }
 
@@ -1692,7 +1692,7 @@ button.lumen-tag:focus-visible {
   transition: transform var(--motion-fast);
 }
 
-.recommendation-card:is(:hover, :focus-within, .is-expanded) .recommendation-action .icon {
+.recommendation-card:is(:hover, :focus-within) .recommendation-action .icon {
   transform: rotate(0deg);
 }
 

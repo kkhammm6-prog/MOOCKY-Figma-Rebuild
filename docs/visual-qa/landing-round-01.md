@@ -20,7 +20,7 @@
 
 - 修复视觉截图未滚动时，视口外的 reveal 区块显示为空白的问题；验收截图会先完整滚动页面，使所有内容进入可见状态。
 - 依据节点 `419:3796`，将 Popular Course Strip 的悬浮文字面板改为距底部 16px，并采用原稿文本 `Ethics of Algorithm`。
-- 依据节点 `419:3854`，将首个 Recommended Course Card 作为原稿展示的展开状态；其他卡片仍保留 hover/focus 展开交互。
+- Recommended Course Card 的静态初始状态统一保持折叠；仅在 hover 或键盘 focus 时展开内容与操作按钮。
 - 使用 Figma 的原稿文案更新 Explore Domains 六张卡片。
 - 依据节点 `419:3858`，重写 FAQ 标题的字体顺序、40px 行高及 48px 间距。
 - 对齐分类网格的两行高度、FAQ 节奏和 Footer 的 545px 高度；1440px 页面总高与原稿同为 4432px。

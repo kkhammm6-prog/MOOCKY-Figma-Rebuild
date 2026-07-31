@@ -274,7 +274,7 @@ test("landing page renders core design-system interactions", async ({ page }, te
   await expect(page.locator(".recommendation-card")).toHaveCount(3);
   await expect(page.locator(".faq-item")).toHaveCount(4);
   await expect(page.locator(".site-footer")).not.toHaveClass(/reveal-on-view/);
-  await expect(page.locator(".recommendation-card.is-expanded")).toHaveCount(1);
+  await expect(page.locator(".recommendation-card.is-expanded")).toHaveCount(0);
   const faqChevron = page.locator(".faq-item button .icon").first();
   await expect(faqChevron).toHaveCSS("width", "24px");
   await expect(faqChevron).toHaveCSS("height", "24px");
@@ -283,14 +283,14 @@ test("landing page renders core design-system interactions", async ({ page }, te
   await expect(page.locator(".popular-sticky")).toHaveCSS("position", "sticky");
   await expect(page.locator(".popular-sticky")).toHaveCSS("top", "0px");
   await expect(page.locator(".section-shell").nth(1)).toHaveCSS("margin-top", "100px");
-  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("height", "280px");
-  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("width", "369.328px");
-  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("border-radius", "0px");
+  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("height", "60px");
+  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("width", "264px");
+  await expect(page.locator(".recommendation-panel").first()).toHaveCSS("border-radius", "30px");
   const longTitlePanelWidth = await page.locator(".recommendation-panel").nth(2).evaluate((element) => element.getBoundingClientRect().width);
   expect(longTitlePanelWidth).toBeGreaterThan(264);
-  await expect(page.locator(".recommendation-title-default").first()).toHaveCSS("opacity", "0");
-  await expect(page.locator(".recommendation-title-expanded").first()).toHaveCSS("opacity", "1");
-  await expect(page.locator(".recommendation-copy p").first()).toHaveCSS("opacity", "1");
+  await expect(page.locator(".recommendation-title-default").first()).toHaveCSS("opacity", "1");
+  await expect(page.locator(".recommendation-title-expanded").first()).toHaveCSS("opacity", "0");
+  await expect(page.locator(".recommendation-copy p").first()).toHaveCSS("opacity", "0");
   await expectLandingThemeMatchesReference(page, "light", { chatReady: false });
 
   await page.locator(".chatbox").evaluate((form) => {
