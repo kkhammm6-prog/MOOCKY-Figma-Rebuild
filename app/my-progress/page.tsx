@@ -1,9 +1,12 @@
+"use client";
+
 import type { CSSProperties } from "react";
 import { Button } from "../components/Button";
 import { LumenIcon, type LumenIconName } from "../components/LumenIcon";
 import { LogoMark } from "../components/LogoMark";
 import { Tag, type TagTone } from "../components/Tag";
 import { ViewportRevealRuntime } from "../components/ViewportRevealRuntime";
+import { useThemeState } from "../hooks/useThemeState";
 import { MyProgressHeader } from "./MyProgressHeader";
 import { MyProgressMotionRuntime } from "./MyProgressMotionRuntime";
 import styles from "./my-progress.module.css";
@@ -322,14 +325,14 @@ function MilestoneCard({ milestone }: { milestone: Milestone }) {
 
 export default function MyProgressPage() {
   const currentCourse = courses[0];
+  const [theme, setTheme] = useThemeState();
 
   return (
-    <div className={styles.prototypeRoot}>
+    <div className={cx(styles.prototypeRoot, theme === "dark" && styles.themeDark)}>
       <ViewportRevealRuntime />
       <MyProgressMotionRuntime />
-      <input className={styles.themeToggle} id="my-progress-theme-toggle" type="checkbox" />
       <div className={styles.page}>
-        <MyProgressHeader />
+        <MyProgressHeader theme={theme} onThemeToggle={() => setTheme(theme === "light" ? "dark" : "light")} />
         <main className={styles.shell}>
           <section className={styles.hero} aria-labelledby="my-progress-title">
             <div className={cx(styles.heroCopy, "reveal-on-view")}>

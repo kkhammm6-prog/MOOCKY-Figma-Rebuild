@@ -11,6 +11,7 @@ import { SiteFooter } from "./components/SiteFooter";
 import { Text } from "./components/Text";
 import { useDemoAuthState } from "./hooks/useDemoAuthState";
 import { useRevealOnView } from "./hooks/useRevealOnView";
+import { useThemeState } from "./hooks/useThemeState";
 import {
   AiResponseEnvelope,
   asset,
@@ -25,28 +26,9 @@ import {
   ThemeName,
 } from "./prototype-data";
 
-const THEME_KEY = "moocky-theme";
 const CHATS_KEY = "moocky-chat-titles";
 
 type DisplayTitleSize = "large" | "medium" | "compact" | "mobile";
-
-function useThemeState() {
-  const [theme, setTheme] = useState<ThemeName>("light");
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
-    }
-  }, []);
-
-  const updateTheme = (nextTheme: ThemeName) => {
-    setTheme(nextTheme);
-    window.localStorage.setItem(THEME_KEY, nextTheme);
-  };
-
-  return [theme, updateTheme] as const;
-}
 
 function Icon({ name, className = "" }: { name: string; className?: string }) {
   return <LumenIcon className={className} name={name} />;
@@ -117,7 +99,7 @@ function MarketingHeader({
         </div>
         <div className="header-actions">
           {isAuthenticated ? (
-            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} themeToggleLabel={themeToggleLabel} />
+            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} theme={theme} themeToggleLabel={themeToggleLabel} />
           ) : (
             <>
               <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>
@@ -213,10 +195,20 @@ function Chatbox({ initialLabel = "The best course for my career" }: { initialLa
 }
 
 function PromptChips() {
+  const sendPromptToAi = (prompt: string) => {
+    window.location.href = `/ai?question=${encodeURIComponent(prompt)}`;
+  };
+
   return (
     <div className="prompt-chips">
       {chatChips.map((chip) => (
-        <button className="prompt-chip" key={chip.label} type="button">
+        <button
+          aria-label={`Send ${chip.label} prompt to MOOCKY AI`}
+          className="prompt-chip"
+          key={chip.label}
+          onClick={() => sendPromptToAi(chip.prompt)}
+          type="button"
+        >
           <Icon name={chip.icon} />
           <span>{chip.label}</span>
         </button>
@@ -265,8 +257,8 @@ function MostPopular() {
           </div>
         </div>
         <div className="popular-list" aria-label="Popular course list">
-          {popularCourses.map((course) => (
-            <PopularCourseStrip href={course.href} imageSrc={asset(course.image)} key={course.title} title={course.title} />
+          {popularCourses.map((course, index) => (
+            <PopularCourseStrip href={course.href} imageSrc={asset(course.image)} key={`${course.title}-${index}`} title={course.title} />
           ))}
         </div>
       </div>
@@ -339,7 +331,10 @@ function FAQAccordion() {
 
   return (
     <section className="faq-section reveal-on-view" aria-labelledby="faq-title">
-      <DisplayTitle firstWord="Frequently" remainder="Asked Questions" className="faq-title" size="compact" />
+      <h2 className="faq-title" id="faq-title">
+        <span className="faq-title-prefix">Frequently Asked</span>
+        <span className="faq-title-emphasis">Questions</span>
+      </h2>
       <div className="faq-list">
         {faqItems.map((item, index) => {
           const open = index === openIndex;

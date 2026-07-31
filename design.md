@@ -21,6 +21,8 @@ flowchart LR
   D --> E["Course AI companion"]
   D --> F["Discussion and notes"]
   D --> G["Progress"]
+  D --> I["Profile drawer"]
+  I --> J["Settings entry"]
   C --> B
   G --> D
   G --> H["Redeem"]
@@ -36,6 +38,7 @@ flowchart LR
 | `/ai` | AI-first workspace | Conversation → reasoning status → answer → follow-ups/cards |
 | `/my-progress` | Learner dashboard | Metrics → active courses → AI insights |
 | `/redeem` | Rewards utility | Balance/context → rewards catalog |
+| `/settings` | Account utility entry | Preferences handoff → return to learner workspace |
 
 Legacy prototype routes may redirect to product routes but must not host duplicate production implementations.
 
@@ -176,6 +179,7 @@ Important confirmed scene components include:
 - `AIThinkingIndicator`
 - `AIAnswerActions`
 - `CompactProductFooter`
+- `ProfileDrawer`
 
 Scene components become global only after repeated use and explicit promotion.
 

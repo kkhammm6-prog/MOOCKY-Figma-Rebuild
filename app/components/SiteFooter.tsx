@@ -23,19 +23,21 @@ export function SiteFooter() {
       <div className="footer-main">
         <div className="footer-copy">
           <FooterDisplayTitle />
-          <Text className="footer-newsletter-copy" tone="muted" variant="body-14">
-            Join <strong>MOOCKY</strong> Newsletter & Get weekly insights on learning strategies and exclusive course early-access.
-          </Text>
-          <form className="newsletter-form" onSubmit={preventSubmit}>
-            <label className="sr-only" htmlFor="newsletter-email">
-              Email
-            </label>
-            <input id="newsletter-email" placeholder="Enter your email" type="email" />
-            <button type="submit">
-              Subscribe
-              <LumenIcon name="arrow-up-right" />
-            </button>
-          </form>
+          <div className="footer-newsletter">
+            <Text className="footer-newsletter-copy" tone="muted" variant="body-14">
+              Join <strong>MOOCKY</strong> Newsletter & Get weekly insights on learning strategies and exclusive course early-access.
+            </Text>
+            <form className="newsletter-form" onSubmit={preventSubmit}>
+              <label className="sr-only" htmlFor="newsletter-email">
+                Email
+              </label>
+              <input id="newsletter-email" placeholder="Enter your email" type="email" />
+              <button type="submit">
+                Subscribe
+                <LumenIcon name="arrow-up-right" />
+              </button>
+            </form>
+          </div>
           <small>&copy; 2026 MOOCKY. All rights reserved.</small>
         </div>
         <nav className="footer-links" aria-label="Footer">

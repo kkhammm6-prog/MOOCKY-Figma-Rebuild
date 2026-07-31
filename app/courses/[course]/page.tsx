@@ -2,17 +2,18 @@
 
 import { type CSSProperties, useState } from "react";
 import { useParams } from "next/navigation";
+import { AuthenticatedHeaderControls } from "../../components/AuthenticatedHeaderControls";
 import { Button } from "../../components/Button";
 import { CompactProductFooter } from "../../components/CompactProductFooter";
 import { LogoMark } from "../../components/LogoMark";
 import { LumenIcon } from "../../components/LumenIcon";
 import { Tag } from "../../components/Tag";
 import { Text } from "../../components/Text";
+import { useDemoAuthState } from "../../hooks/useDemoAuthState";
 import { useRevealOnView } from "../../hooks/useRevealOnView";
+import { useThemeState, type AppTheme } from "../../hooks/useThemeState";
 import { getPublicCourseDetail, included, type PublicCourseDetail, type PublicCourseModule } from "../public-course-data";
 import styles from "./public-course-detail.module.css";
-
-type ThemeName = "light" | "dark";
 
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -39,27 +40,42 @@ function DisplayTitle({
   );
 }
 
-function PublicHeader({ onThemeToggle, theme }: { onThemeToggle: () => void; theme: ThemeName }) {
+function PublicHeader({ onThemeToggle, theme }: { onThemeToggle: () => void; theme: AppTheme }) {
+  const [isAuthenticated, setIsAuthenticated] = useDemoAuthState();
+  const [isSearchActive, setIsSearchActive] = useState(false);
   const themeToggleLabel = `Switch to ${theme === "light" ? "dark" : "light"} mode`;
 
   return (
-    <header className="marketing-header is-guest">
+    <header className={`marketing-header ${isAuthenticated ? "is-authenticated" : "is-guest"} ${isAuthenticated && isSearchActive ? "is-searching" : ""}`}>
       <div className="marketing-header-inner">
         <div className="header-left">
           <a className="logo-lockup" href="/" aria-label="MOOCKY home">
             <LogoMark />
           </a>
-          <button className="prototype-button prototype-button-ghost" type="button">
-            <LumenIcon name="loader" />
-            <span>MyProgress</span>
-          </button>
+          {isAuthenticated ? (
+            <a className="prototype-button prototype-button-ghost" href="/my-progress">
+              <LumenIcon name="loader" />
+              <span>MyProgress</span>
+            </a>
+          ) : (
+            <button className="prototype-button prototype-button-ghost" type="button">
+              <LumenIcon name="loader" />
+              <span>MyProgress</span>
+            </button>
+          )}
         </div>
         <div className="header-actions">
-          <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>
-            <LumenIcon name="eclipse" />
-          </button>
-          <Button kind="auxiliaryAction" label="Log In" />
-          <Button href="/" kind="primaryAction" label="Explore MOOCKY" />
+          {isAuthenticated ? (
+            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} theme={theme} themeToggleLabel={themeToggleLabel} />
+          ) : (
+            <>
+              <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>
+                <LumenIcon name="eclipse" />
+              </button>
+              <Button kind="auxiliaryAction" label="Log In" onClick={() => setIsAuthenticated(true)} />
+              <Button href="/" kind="primaryAction" label="Explore MOOCKY" />
+            </>
+          )}
         </div>
       </div>
     </header>
@@ -105,31 +121,44 @@ function PurchasePanel() {
 }
 
 function Syllabus({ modules }: { modules: PublicCourseModule[] }) {
+  const [openModuleId, setOpenModuleId] = useState<string | null>(modules[0]?.id ?? null);
+
   return (
     <section className={cx(styles.section, "reveal-on-view")} aria-labelledby="syllabus-title">
       <div className={styles.sectionHeader}>
         <Text as="h2" id="syllabus-title" variant="label-16" tone="accent">Course Structure</Text>
       </div>
       <div className={styles.syllabusList}>
-        {modules.map((module, index) => (
-          <article className={`${styles.moduleCard} ${index === 0 ? styles.moduleCardExpanded : ""}`} key={module.id}>
-            <div className={styles.moduleSummary}>
+        {modules.map((module) => {
+          const isOpen = module.id === openModuleId;
+          const lessonListId = `module-${module.id}-lessons`;
+
+          return (
+            <article className={cx(styles.moduleCard, isOpen && styles.moduleCardExpanded)} key={module.id}>
+              <button
+                aria-controls={lessonListId}
+                aria-expanded={isOpen}
+                className={styles.moduleSummary}
+                onClick={() => setOpenModuleId(isOpen ? null : module.id)}
+                type="button"
+              >
               <strong>{module.id}</strong>
               <div>
                 <h3>{module.title}</h3>
                 <p>{module.meta}</p>
               </div>
               <LumenIcon name="faq-chevron" />
-            </div>
-            {index === 0 ? (
-              <ul className={styles.lessonPreview}>
-                {module.lessons.map((lesson) => (
-                  <li key={lesson}>{lesson}</li>
-                ))}
-              </ul>
-            ) : null}
+              </button>
+              <div aria-hidden={!isOpen} className={styles.lessonPreview} id={lessonListId}>
+                <ul>
+                  {module.lessons.map((lesson) => (
+                    <li key={lesson}>{lesson}</li>
+                  ))}
+                </ul>
+              </div>
           </article>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -144,7 +173,7 @@ function readCourseParam(courseParam: string | string[] | undefined) {
 }
 
 export default function PublicCourseDetailPage() {
-  const [theme, setTheme] = useState<ThemeName>("light");
+  const [theme, setTheme] = useThemeState();
   const params = useParams<{ course?: string | string[] }>();
   const course = getPublicCourseDetail(readCourseParam(params.course));
   useRevealOnView();

@@ -2,7 +2,7 @@
 
 > 状态：前置准备  
 > 建立日期：2026-07-30  
-> 当前阶段：Phase 0 — 独立仓库与证据链准备
+> 当前阶段：Phase 3 / 4 — Landing Page 实现与 V1 视觉验收
 
 ## 1. 项目目标
 
@@ -90,10 +90,10 @@
 - [x] 保留工程骨架与 Lumen Atlas 设计系统。
 - [x] 创建 GitHub 公开仓库并推送 `main`、`codex/foundation` 与 `v0.1-planning`。
 - [x] 创建 Notion 执行计划。
-- [ ] 为首个目标 Frame 获取包含 `node-id` 的 Figma 链接。
-- [ ] 创建 `v0.1-planning` Tag。
+- [x] 为首个目标 Frame 获取包含 `node-id` 的 Figma 链接：Landing Page section `419:5349`。
+- [x] 创建 `v0.1-planning` Tag。
 
-**退出标准**：GitHub、Notion 与本地仓库相互链接；首个目标节点可被 Figma MCP 精确读取。
+**退出标准**：GitHub、Notion 与本地仓库相互链接；首个目标节点可被 Figma MCP 精确读取。**已达成。**
 
 ### Phase 1 — Figma Inventory
 

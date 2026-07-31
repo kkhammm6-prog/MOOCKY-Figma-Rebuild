@@ -5,39 +5,56 @@ export type ThemeName = "light" | "dark";
 export type ChatChip = {
   label: string;
   icon: string;
+  prompt: string;
 };
 
 export const chatChips: ChatChip[] = [
-  { label: "Boost My Career Path", icon: "route.svg" },
-  { label: "Build My Interest", icon: "fishing-rod.svg" },
-  { label: "Analyze my course", icon: "book-open-check.svg" },
-  { label: "Inspire Me", icon: "wand-sparkles.svg" },
+  {
+    label: "Boost My Career Path",
+    icon: "route.svg",
+    prompt: "Help me create a learning path that will advance my career.",
+  },
+  {
+    label: "Build My Interest",
+    icon: "fishing-rod.svg",
+    prompt: "Help me discover learning topics that match my interests.",
+  },
+  {
+    label: "Analyze my course",
+    icon: "book-open-check.svg",
+    prompt: "Analyze my current courses and recommend what I should learn next.",
+  },
+  {
+    label: "Inspire Me",
+    icon: "wand-sparkles.svg",
+    prompt: "Inspire me with an unexpected learning direction I could explore next.",
+  },
 ];
 
 export const popularCourses: Array<{ href?: string; image: string; title: string }> = [
   {
-    title: "Ethics of Adaptive Algorithms",
+    title: "Ethics of Algorithm",
     image: "popular-01.png",
     href: "/courses/ethics-of-adaptive-algorithms",
   },
   {
-    title: "Human-Centered AI Systems",
+    title: "Ethics of Algorithm",
     image: "popular-02.png",
   },
   {
-    title: "Climate Data Visualization",
+    title: "Ethics of Algorithm",
     image: "popular-03.png",
   },
   {
-    title: "Cognitive Interface Design",
+    title: "Ethics of Algorithm",
     image: "popular-04.png",
   },
   {
-    title: "Applied Generative Media",
+    title: "Ethics of Algorithm",
     image: "popular-05.png",
   },
   {
-    title: "Responsible Product Analytics",
+    title: "Ethics of Algorithm",
     image: "popular-06.png",
   },
 ];
@@ -46,37 +63,37 @@ export const domains = [
   {
     title: "Cognitive Science",
     icon: "brain.svg",
-    copy: "Map how people think, decide, and retain knowledge.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-01.png",
   },
   {
     title: "Design Systems",
     icon: "pen-tool.svg",
-    copy: "Build reusable UI rules, tokens, and component logic.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-02.png",
   },
   {
     title: "AI Engineering",
     icon: "square-code.svg",
-    copy: "Ship reliable AI workflows from prompts to products.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-03.png",
   },
   {
     title: "Data Ethics",
     icon: "hard-drive.svg",
-    copy: "Evaluate data choices before they become product risk.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-04.png",
   },
   {
     title: "Digital Arts",
     icon: "paintbrush-vertical.svg",
-    copy: "Prototype visual systems with computational tools.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-05.png",
   },
   {
     title: "Economics",
     icon: "circle-pound-sterling.svg",
-    copy: "Read incentives, markets, and policy through cases.",
+    copy: "Explore the intersection of design and the natural world.",
     hoverAsset: "domain-gradient-06.png",
   },
 ];

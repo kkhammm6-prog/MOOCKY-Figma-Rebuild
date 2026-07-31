@@ -206,9 +206,18 @@ async function captureThemeReferenceScreenshots(page: Page, testInfo: TestInfo, 
 
   for (const width of [1440, 1024, 390]) {
     await page.setViewportSize({ width, height: 1200 });
-    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.evaluate(async () => {
+      const maxScroll = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+
+      for (let offset = 0; offset <= maxScroll; offset += 700) {
+        window.scrollTo(0, offset);
+        await new Promise((resolve) => window.setTimeout(resolve, 60));
+      }
+
+      window.scrollTo(0, 0);
+    });
     await page.mouse.move(0, 0);
-    await page.waitForTimeout(220);
+    await page.waitForTimeout(360);
     await page.screenshot({
       fullPage: true,
       path: testInfo.outputPath(`landing-${theme}-${width}.png`),
@@ -413,4 +422,15 @@ test("landing chatbox submits with Enter only when ready", async ({ page }) => {
   await expect(sendButton).toBeEnabled();
   await input.press("Enter");
   await expect(page).toHaveURL(/\/ai\?question=design%20systems$/);
+});
+
+test("landing shortcut prompts open AI chat and submit the matching prompt", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.clear());
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Send Boost My Career Path prompt to MOOCKY AI" }).click();
+
+  await expect(page).toHaveURL(
+    /\/ai\?question=Help%20me%20create%20a%20learning%20path%20that%20will%20advance%20my%20career\.$/,
+  );
 });

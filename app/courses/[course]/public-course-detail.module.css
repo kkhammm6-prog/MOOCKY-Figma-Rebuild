@@ -297,10 +297,21 @@
 
 .moduleSummary {
   align-items: center;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
   display: grid;
+  font: inherit;
   gap: 24px;
   grid-template-columns: 44px minmax(0, 1fr) 16px;
   padding: 24px;
+  text-align: left;
+  width: 100%;
+}
+
+.moduleSummary:focus-visible {
+  outline: var(--stroke-emphasis) solid var(--border-medium);
+  outline-offset: -3px;
 }
 
 .moduleSummary > strong {
@@ -332,6 +343,10 @@
   margin: 0;
 }
 
+.moduleSummary svg {
+  transition: transform var(--motion-fast);
+}
+
 .moduleCardExpanded .moduleSummary svg {
   transform: rotate(180deg);
 }
@@ -339,9 +354,26 @@
 .lessonPreview {
   border-top: var(--stroke-default) solid var(--border-soft);
   display: grid;
-  gap: 10px;
+  grid-template-rows: 0fr;
   margin: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: grid-template-rows var(--motion-fast), padding var(--motion-fast);
+}
+
+.moduleCardExpanded .lessonPreview {
+  grid-template-rows: 1fr;
   padding: 16px 24px 24px 92px;
+}
+
+.lessonPreview ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
 }
 
 .lessonPreview li {
@@ -645,6 +677,10 @@
   }
 
   .lessonPreview {
+    padding-left: 0;
+  }
+
+  .moduleCardExpanded .lessonPreview {
     padding-left: 48px;
   }
 
