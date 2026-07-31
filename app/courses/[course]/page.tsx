@@ -66,7 +66,7 @@ function PublicHeader({ onThemeToggle, theme }: { onThemeToggle: () => void; the
         </div>
         <div className="header-actions">
           {isAuthenticated ? (
-            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} themeToggleLabel={themeToggleLabel} />
+            <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} theme={theme} themeToggleLabel={themeToggleLabel} />
           ) : (
             <>
               <button className="prototype-button prototype-button-standalone" onClick={onThemeToggle} type="button" aria-label={themeToggleLabel}>

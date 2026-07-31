@@ -535,7 +535,7 @@ function CourseHeader({ theme, onThemeToggle }: { theme: ThemeName; onThemeToggl
           </a>
         </div>
         <div className="header-actions">
-          <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} themeToggleLabel={`Switch to ${theme === "light" ? "dark" : "light"} mode`} />
+          <AuthenticatedHeaderControls onSearchActiveChange={setIsSearchActive} onThemeToggle={onThemeToggle} theme={theme} themeToggleLabel={`Switch to ${theme === "light" ? "dark" : "light"} mode`} />
         </div>
       </div>
     </header>

@@ -3,11 +3,14 @@
 import { FormEvent, KeyboardEvent, useRef, useState } from "react";
 import { Button } from "./Button";
 import { LumenIcon } from "./LumenIcon";
+import { ProfileDrawer } from "./ProfileDrawer";
+import type { AppTheme } from "../hooks/useThemeState";
 
 type AuthenticatedHeaderControlsProps = {
   onSearchActiveChange?: (active: boolean) => void;
   onThemeToggle: () => void;
   themeToggleLabel: string;
+  theme: AppTheme;
 };
 
 function HeaderSearchField({ onActiveChange }: { onActiveChange?: (active: boolean) => void }) {
@@ -86,7 +89,9 @@ function HeaderSearchField({ onActiveChange }: { onActiveChange?: (active: boole
   );
 }
 
-export function AuthenticatedHeaderControls({ onSearchActiveChange, onThemeToggle, themeToggleLabel }: AuthenticatedHeaderControlsProps) {
+export function AuthenticatedHeaderControls({ onSearchActiveChange, onThemeToggle, theme, themeToggleLabel }: AuthenticatedHeaderControlsProps) {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
   return (
     <>
       <HeaderSearchField onActiveChange={onSearchActiveChange} />
@@ -101,7 +106,8 @@ export function AuthenticatedHeaderControls({ onSearchActiveChange, onThemeToggl
           <LumenIcon name="eclipse" />
         </button>
       </div>
-      <Button aria-label="Open learner profile" className="header-profile-action" icon="circle-user" kind="standaloneIcon" />
+      <Button aria-label="Open learner profile" className="header-profile-action" icon="circle-user" kind="standaloneIcon" onClick={() => setIsProfileOpen(true)} />
+      <ProfileDrawer isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} theme={theme} />
     </>
   );
 }

@@ -25,6 +25,7 @@ export function MyProgressHeader({ theme, onThemeToggle }: { theme: AppTheme; on
           <AuthenticatedHeaderControls
             onSearchActiveChange={setIsSearchActive}
             onThemeToggle={onThemeToggle}
+            theme={theme}
             themeToggleLabel={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
           />
         </div>
