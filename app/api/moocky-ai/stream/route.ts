@@ -272,8 +272,11 @@ export async function POST(request: NextRequest) {
           max_tokens: 3200,
         };
 
-        if (provider === "kimi") {
+        if (provider === "kimi" || provider === "openrouter") {
           compatibleRequest.response_format = { type: "json_object" };
+        }
+
+        if (provider === "kimi") {
           compatibleRequest.thinking = { type: kimiThinkingMode };
         }
 

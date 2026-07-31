@@ -256,6 +256,9 @@ Environment variables:
 - `NVIDIA_API_KEY`
 - `NVIDIA_MODEL`
 - `NVIDIA_BASE_URL`
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_MODEL`
+- `OPENROUTER_BASE_URL`
 
 Keys remain server-side. `docs/ai-system-prompt.md` must be included in the deployment package.
 

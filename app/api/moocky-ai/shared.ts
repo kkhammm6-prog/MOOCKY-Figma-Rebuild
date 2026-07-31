@@ -3,7 +3,7 @@ import path from "node:path";
 import { demoPersonalizedSuggestionCards, type AiConversationMode, type AiResponseEnvelope } from "../../prototype-data";
 
 export type KimiThinkingMode = "disabled" | "enabled";
-export type AiProvider = "openai" | "kimi" | "nvidia";
+export type AiProvider = "openai" | "kimi" | "nvidia" | "openrouter";
 
 export type AiProviderConfig = {
   apiKey?: string;
@@ -180,8 +180,12 @@ export function getKimiThinkingMode(): KimiThinkingMode {
 export function getAiProvider(): AiProvider {
   const configuredProvider = process.env.AI_PROVIDER?.toLowerCase();
 
-  if (configuredProvider === "nvidia" || configuredProvider === "kimi" || configuredProvider === "openai") {
+  if (configuredProvider === "nvidia" || configuredProvider === "kimi" || configuredProvider === "openai" || configuredProvider === "openrouter") {
     return configuredProvider;
+  }
+
+  if (process.env.OPENROUTER_API_KEY) {
+    return "openrouter";
   }
 
   return process.env.MOONSHOT_API_KEY ? "kimi" : "openai";
@@ -195,6 +199,15 @@ export function getAiProviderConfig(): AiProviderConfig {
       apiKey: process.env.NVIDIA_API_KEY,
       baseUrl: (process.env.NVIDIA_BASE_URL ?? "https://integrate.api.nvidia.com/v1").replace(/\/$/, ""),
       model: process.env.NVIDIA_MODEL ?? "moonshotai/kimi-k2.6",
+      provider,
+    };
+  }
+
+  if (provider === "openrouter") {
+    return {
+      apiKey: process.env.OPENROUTER_API_KEY,
+      baseUrl: (process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1").replace(/\/$/, ""),
+      model: process.env.OPENROUTER_MODEL ?? "google/gemma-4-26b-a4b-it:free",
       provider,
     };
   }
@@ -235,6 +248,10 @@ export function getNvidiaRequestOptions(model: string): Record<string, unknown> 
 export function providerDisplayName(provider: AiProvider) {
   if (provider === "nvidia") {
     return "NVIDIA NIM";
+  }
+
+  if (provider === "openrouter") {
+    return "OpenRouter";
   }
 
   return provider === "kimi" ? "Kimi" : "OpenAI";

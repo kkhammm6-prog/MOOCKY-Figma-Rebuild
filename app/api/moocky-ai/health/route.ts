@@ -16,6 +16,7 @@ function providerConfig() {
     kimiThinkingMode: getKimiThinkingMode(),
     hasMoonshotApiKey: Boolean(process.env.MOONSHOT_API_KEY),
     hasNvidiaApiKey: Boolean(process.env.NVIDIA_API_KEY),
+    hasOpenRouterApiKey: Boolean(process.env.OPENROUTER_API_KEY),
     hasOpenAiApiKey: Boolean(process.env.OPENAI_API_KEY),
   };
 }
@@ -61,7 +62,7 @@ export async function GET(request: NextRequest) {
             max_tokens: 80,
         };
 
-        if (providerConfig.provider === "kimi") {
+        if (providerConfig.provider === "kimi" || providerConfig.provider === "openrouter") {
           probeRequest.response_format = { type: "json_object" };
         }
 
