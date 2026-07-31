@@ -52,16 +52,21 @@ export async function GET(request: NextRequest) {
       kimiProbe = { ok: false, detail: `${providerDisplayName(providerConfig.provider)} API key is missing.` };
     } else {
       try {
-        const response = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
-          body: JSON.stringify({
+        const probeRequest: Record<string, unknown> = {
             model: providerConfig.model,
             messages: [
               { role: "system", content: "Return only valid JSON." },
               { role: "user", content: "Return {\"ok\":true}" },
             ],
-            response_format: { type: "json_object" },
             max_tokens: 80,
-          }),
+        };
+
+        if (providerConfig.provider === "kimi") {
+          probeRequest.response_format = { type: "json_object" };
+        }
+
+        const response = await fetch(`${providerConfig.baseUrl}/chat/completions`, {
+          body: JSON.stringify(probeRequest),
           headers: {
             Authorization: `Bearer ${providerConfig.apiKey}`,
             "Content-Type": "application/json",

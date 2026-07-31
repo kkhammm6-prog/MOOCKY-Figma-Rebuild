@@ -103,11 +103,11 @@ export async function POST(request: NextRequest) {
           { role: "system", content: systemPrompt },
           { role: "user", content: JSON.stringify(inputPayload) },
         ],
-        response_format: { type: "json_object" },
         max_tokens: 2400,
     };
 
     if (provider === "kimi") {
+      compatibleRequest.response_format = { type: "json_object" };
       compatibleRequest.thinking = { type: kimiThinkingMode };
     }
 
