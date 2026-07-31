@@ -968,6 +968,21 @@ button.lumen-tag:focus-visible {
   min-height: 0;
   overflow-y: auto;
   padding: 24px 20px 32px;
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 48%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+.profile-drawer-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.profile-drawer-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-drawer-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-muted) 48%, transparent);
+  border-radius: 9999px;
 }
 
 .profile-identity {
