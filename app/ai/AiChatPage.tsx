@@ -118,17 +118,12 @@ function uniqueRecommendationCards(cards: AiResponseEnvelope["courseRecommendati
   });
 }
 
-function normalizeResponseForConversationMode(response: AiResponseEnvelope, mode: AiConversationMode): AiResponseEnvelope {
-  if (response.answerKind !== "answer" || mode !== "personalizedSuggestion") {
-    return {
-      ...response,
-      courseRecommendationCards: [],
-    };
-  }
+function normalizeResponseForConversationMode(response: AiResponseEnvelope, _mode: AiConversationMode): AiResponseEnvelope {
+  const natureArchitectureRecommendation = demoPersonalizedSuggestionCards.find((card) => card.id === "nature-architecture")!;
 
   return {
     ...response,
-    courseRecommendationCards: uniqueRecommendationCards([...response.courseRecommendationCards, ...demoPersonalizedSuggestionCards]).slice(0, 4),
+    courseRecommendationCards: [natureArchitectureRecommendation],
   };
 }
 
